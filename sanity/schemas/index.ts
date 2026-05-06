@@ -1,5 +1,5 @@
-import project from "./project-schema";
+//import project from "./project-schema";
 
-const schemas=[project]
+//const schemas=[project]
 
-export default schemas; 
+//export default schemas; 

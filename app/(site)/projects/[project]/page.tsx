@@ -1,40 +1,40 @@
-import { getProject, getProjects } from "@/sanity/sanity-utils";
-import { PortableText } from "@portabletext/react"
+import { getProject } from "@/sanity/sanity-utils";
+import { PortableText } from "@portabletext/react";
 import Image from "next/image";
 
-
 type Props = {
-    params: { project: string };
-}
+  params: { project: string };
+};
 
 export default async function Project({ params }: Props) {
+  const slug = params.project;
+  const project = await getProject(slug);
 
-    const slug = params.project;
-    const project = await getProject(slug);
-    const publications = await getProjects();
+  if (!project) {
+    return <div>Project not found.</div>;
+  }
 
-    if (!project) {
-        return <div>Publication not found.</div>;
-    }
+  return (
+    <div className="max-w-3xl mx-auto py-20">
+      <header className="flex items-center justify-between mb-6">
+        <h1 className="text-2xl font-bold">{project.title}</h1>
+      </header>
 
-    return <div className="max-w-3xl mx-auto py-20">
+      {project.frontcover && (
+        <Image
+          src={project.frontcover}
+          alt={project.alt || project.title}
+          width={800}
+          height={500}
+          className="object-cover rounded-lg mb-8"
+        />
+      )}
 
-        <header className="flex items-center justify-between">
-            <h1>{project.title}</h1>
-            <h1>plopplop</h1>
-        </header>
-
-       {project.frontcover && (
-                   <Image
-                   src={project.frontcover}
-                   alt={project.alt}
-                   width={200}
-                   height={200}
-                 className="object-cover rounded-lg" 
-               />
-             )}
-
-        <div><PortableText value={project.content} /></div>
-
+      {project.content && (
+        <div className="prose">
+          <PortableText value={project.content} />
+        </div>
+      )}
     </div>
+  );
 }

@@ -1,14 +1,11 @@
-import {Project} from "@/types/project" 
-import {createClient, groq} from "next-sanity";
-import clientConfig from "./schemas/config/client-config";
+import { Project } from "@/types/project";
+import { createClient, groq } from "next-sanity";
 import { client } from "./lib/client";
-
 
 export async function getProjects(): Promise<Project[]> {
   try {
-    const projects = await createClient(clientConfig).fetch(
-        groq`*[_type == "project"]
-        {
+    const projects = await client.fetch(
+      groq`*[_type == "project"]{
         _id,
         _createdAt,
         title,
@@ -16,20 +13,21 @@ export async function getProjects(): Promise<Project[]> {
         "slug": slug.current,
         "frontcover": frontcover.asset->url,
         alt,
-        content,
-    }`);
-     // Fallback in case something goes wrong and `projects` is null
+        content
+      }`
+    ); 
+
     return projects ?? [];
   } catch (error) {
-    console.error("Failed to fetch publications:", error);
-    return []; // Prevents crash from null
+    console.error("Failed to fetch projects:", error);
+    return [];
   }
 }
 
 export async function getProject(slug: string): Promise<Project> {
-return createClient(clientConfig).fetch(
-        groq`*[_type == "project" && slug.current == $slug][0] 
-        {
+  try {
+    const project = await client.fetch(
+      groq`*[_type == "project" && slug.current == $slug][0]{
         _id,
         _createdAt,
         title,
@@ -37,13 +35,41 @@ return createClient(clientConfig).fetch(
         "slug": slug.current,
         "frontcover": frontcover.asset->url,
         alt,
-        content,
-        }`, {slug}
-    )
+        content
+      }`,
+      { slug }
+    );
+
+    return project;
+  } catch (error) {
+    console.error("Failed to fetch project:", error);
+    return null as any;
+  }
+}
+
+export async function getAbout() {
+  return await client.fetch(
+    `*[_type == "about"][0]{
+      bio,
+      contactDetails,
+      exhibitions,
+      publishedTexts,
+      otherWebsites[]{
+        title,
+        description,
+        url,
+        image{
+          asset->{
+            url
+          }
+        }
+      }
+    }`
+  );
 }
 
 export async function getHomepageImages() {
-  const query = `
+  const data = await client.fetch(`
     *[_type == "siteSettings"][0]{
       homepageImages[]{
         asset->{
@@ -51,8 +77,7 @@ export async function getHomepageImages() {
         }
       }
     }
-  `;
+  `);
 
-  const data = await client.fetch(query);
-  return data.homepageImages;
+  return data?.homepageImages ?? [];
 }

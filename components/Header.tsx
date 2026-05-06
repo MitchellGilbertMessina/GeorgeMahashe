@@ -6,12 +6,12 @@ export default function Header() {
       <div className="max-w-5xl mx-auto flex justify-between items-center px-6">
 
         <Link href="/" className="text-lg font-medium">
-          Mitchell Gilbert Messina
+          George Mahashe
         </Link>
 
         <nav className="flex gap-6 text-sm">
           <Link href="/projects">Projects</Link>
-          <Link href="/contact">Contact</Link>
+          <Link href="/about">About</Link>
           <Link href="/archive">Archive</Link>
         </nav>
 
