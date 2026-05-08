@@ -27,7 +27,7 @@ export default function SiteLayout({
   return (
     <div className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
       <Header />
-      <main className="py-20">{children}</main>
+      <main className="py-2">{children}</main>
       <Footer />
     </div>
   );
