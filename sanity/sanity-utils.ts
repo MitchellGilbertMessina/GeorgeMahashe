@@ -81,3 +81,20 @@ export async function getHomepageImages() {
 
   return data?.homepageImages ?? [];
 }
+
+
+export async function getArchiveItems() {
+  const query = `
+    *[_type == "archiveItem"] | order(_createdAt desc) {
+      _id,
+      title,
+      description,
+      image,
+      x,
+      y,
+      width
+    }
+  `;
+
+  return await client.fetch(query);
+}

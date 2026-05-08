@@ -1,9 +1,8 @@
-export default function ArchivePage() {
-  return (
-    <div className="max-w-5xl mx-auto px-6 py-20">
-      <h1 className="text-3xl font-bold mb-6">Archive</h1>
+import { getArchiveItems } from "@/sanity/sanity-utils";
+import ArchiveCanvas from "./ArchiveCanvas";
 
-      <p>Older projects and experiments.</p>
-    </div>
-  )
+export default async function ArchivePage() {
+  const items = await getArchiveItems();
+
+  return <ArchiveCanvas items={items} />;
 }
