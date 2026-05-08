@@ -5,11 +5,11 @@ export default function Header() {
     <header className="w-full border-b border-gray-200 py-6">
       <div className="max-w-5xl mx-auto flex justify-between items-center px-6">
 
-        <Link href="/" className="text-lg font-medium">
+        <Link href="/" className=" font-metana text-lg">
           George Mahashe
         </Link>
 
-        <nav className="flex gap-6 text-sm">
+        <nav className="flex gap-6 text-sm font-metana text-5xl">
           <Link href="/projects">Projects</Link>
           <Link href="/about">About</Link>
           <Link href="/archive">Archive</Link>
