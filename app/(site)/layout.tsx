@@ -25,9 +25,13 @@ export default function SiteLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+    <div
+      className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col min-h-screen`}
+    >
       <Header />
-      <main className="py-2">{children}</main>
+
+      <main className="flex-1 py-2">{children}</main>
+
       <Footer />
     </div>
   );
