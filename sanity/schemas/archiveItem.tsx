@@ -8,42 +8,41 @@ export default defineType({
   fields: [
     defineField({
       name: "title",
-      title: "Title",
       type: "string",
     }),
 
     defineField({
       name: "description",
-      title: "Description",
       type: "text",
     }),
 
     defineField({
       name: "image",
-      title: "Image",
       type: "image",
-      options: {
-        hotspot: true,
-      },
     }),
 
-    // Initial positioning
     defineField({
       name: "x",
-      title: "Initial X Position",
       type: "number",
+      initialValue: 0,
     }),
 
     defineField({
       name: "y",
-      title: "Initial Y Position",
       type: "number",
+      initialValue: 0,
     }),
 
     defineField({
       name: "width",
-      title: "Width",
       type: "number",
+      initialValue: 320,
+    }),
+
+    defineField({
+      name: "rotation",
+      type: "number",
+      initialValue: 0,
     }),
   ],
 });

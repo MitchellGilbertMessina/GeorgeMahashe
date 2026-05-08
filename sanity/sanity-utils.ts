@@ -92,7 +92,8 @@ export async function getArchiveItems() {
       image,
       x,
       y,
-      width
+      width,
+      rotation
     }
   `;
 
