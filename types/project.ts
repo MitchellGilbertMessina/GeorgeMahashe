@@ -1,35 +1,57 @@
-import { PortableTextBlock } from "next-sanity";
+export type PageBuilderBlock =
+  | {
+      _type: "textBlock";
+      content: any[];
+    }
 
-export type DefunctContextEntry = {
-  title: string;
-  slug?: string;
-  description?: string;
-  content?: any[];
-  images?: {
-    asset: {
-      url: string;
+  | {
+      _type: "headingBlock";
+      heading: string;
+    }
+
+  | {
+      _type: "imageBlock";
+      image: {
+        asset: {
+          url: string;
+        };
+      };
+      caption?: string;
+    }
+
+  | {
+      _type: "galleryBlock";
+      images: {
+        asset: {
+          url: string;
+        };
+      }[];
     };
-  }[];
-};
 
 export type Project = {
   _id: string;
   _createdAt: string;
+
   title: string;
-  author?: string;
   slug: string;
-  frontcover?: string;
+
+  author?: string;
+
+  heroImage?: string;
+
   alt?: string;
-  content?: any[];
 
-  defunctContextData?: {
-    research?: DefunctContextEntry[];
+  shortDescription?: string;
 
-    programming?: {
-      commissioned?: DefunctContextEntry[];
-      facilitated?: DefunctContextEntry[];
-    };
+  projectType?: string;
 
-    publishing?: DefunctContextEntry[];
+  orderRank?: number;
+
+  parentProject?: {
+    _id: string;
+    title: string;
+    slug: string;
   };
+
+  pageBuilder?: PageBuilderBlock[];
 };

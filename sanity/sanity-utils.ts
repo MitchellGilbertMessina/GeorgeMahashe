@@ -5,17 +5,21 @@ import { client } from "./lib/client";
 export async function getProjects(): Promise<Project[]> {
   try {
     const projects = await client.fetch(
-      groq`*[_type == "project"]{
+      groq`*[_type == "project"] | order(orderRank asc){
         _id,
         _createdAt,
+
         title,
-        author,
+
         "slug": slug.current,
-        "frontcover": frontcover.asset->url,
-        alt,
-        content
+
+        "heroImage": heroImage.asset->url,
+
+        shortDescription,
+
+        projectType
       }`
-    ); 
+    );
 
     return projects ?? [];
   } catch (error) {
@@ -30,61 +34,40 @@ export async function getProject(slug: string): Promise<Project> {
       groq`*[_type == "project" && slug.current == $slug][0]{
         _id,
         _createdAt,
+
         title,
         author,
+
         "slug": slug.current,
-        "frontcover": frontcover.asset->url,
+
+        "heroImage": heroImage.asset->url,
+
         alt,
-        content,
 
-        defunctContextData{
-          research[]{
-            title,
-            "slug": slug.current,
-            description,
-            content,
-            images[]{
-              asset->{
-                url
-              }
+        shortDescription,
+
+        projectType,
+
+        orderRank,
+
+        parentProject->{
+          _id,
+          title,
+          "slug": slug.current
+        },
+
+        pageBuilder[]{
+          ...,
+
+          image{
+            asset->{
+              url
             }
           },
 
-          programming{
-            commissioned[]{
-              title,
-              "slug": slug.current,
-              description,
-              content,
-              images[]{
-                asset->{
-                  url
-                }
-              }
-            },
-
-            facilitated[]{
-              title,
-              "slug": slug.current,
-              description,
-              content,
-              images[]{
-                asset->{
-                  url
-                }
-              }
-            }
-          },
-
-          publishing[]{
-            title,
-            "slug": slug.current,
-            description,
-            content,
-            images[]{
-              asset->{
-                url
-              }
+          images[]{
+            asset->{
+              url
             }
           }
         }

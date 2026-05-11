@@ -4,10 +4,21 @@ const project = {
   type: "document",
 
   fields: [
+    // BASIC INFO
+
     {
       name: "title",
       title: "Title",
       type: "string",
+    },
+
+    {
+      name: "slug",
+      title: "Slug",
+      type: "slug",
+      options: {
+        source: "title",
+      },
     },
 
     {
@@ -17,15 +28,8 @@ const project = {
     },
 
     {
-      name: "slug",
-      title: "Slug",
-      type: "slug",
-      options: { source: "title" }
-    },
-
-    {
-      name: "frontcover",
-      title: "Front Cover",
+      name: "heroImage",
+      title: "Hero Image",
       type: "image",
     },
 
@@ -33,27 +37,67 @@ const project = {
       name: "alt",
       title: "Alt Text",
       type: "string",
-      options: { source: "title" }
     },
 
     {
-      name: "content",
-      title: "Content",
+      name: "shortDescription",
+      title: "Short Description",
+      type: "text",
+    },
+
+    // PROJECT TYPE
+
+    {
+      name: "projectType",
+      title: "Project Type",
+      type: "string",
+
+      options: {
+        list: [
+          { title: "Main Project", value: "main-project" },
+          { title: "Research", value: "research" },
+          { title: "Programming", value: "programming" },
+          { title: "Publishing", value: "publishing" },
+          { title: "Workshop", value: "workshop" },
+          { title: "Residency", value: "residency" },
+          { title: "Lecture / Talk", value: "lecture" },
+          { title: "Subproject", value: "subproject" },
+        ],
+      },
+    },
+
+    // HIERARCHY
+
+    {
+      name: "parentProject",
+      title: "Parent Project",
+      type: "reference",
+      to: [{ type: "project" }],
+    },
+
+    // ORDERING
+
+    {
+      name: "orderRank",
+      title: "Order Rank",
+      type: "number",
+    },
+
+    // FLEXIBLE PAGE BUILDER
+
+    {
+      name: "pageBuilder",
+      title: "Page Builder",
       type: "array",
-      of: [{ type: "block" }],
-    },
 
-    // ADD THIS
-    {
-      name: "defunctContextData",
-      title: "defunct context data",
-      type: "defunctContext",
-
-      // Optional but recommended
-      //hidden: ({ document }: any) =>
-      //  document?.title !== "Defunct Context",
+      of: [
+        { type: "textBlock" },
+        { type: "imageBlock" },
+        { type: "galleryBlock" },
+        { type: "headingBlock" },
+      ],
     },
-  ]
-}
+  ],
+};
 
 export default project;

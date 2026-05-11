@@ -4,9 +4,10 @@ import about from '../schemas/about-schema';
 import siteSettings from "../schemas/siteSettings";
 import archiveItem from "../schemas/archiveItem";
 
-import defunctContext from "../schemas/objects/defunctContext";
-import defunctContextEntry from "../schemas/objects/defunctContextEntry";
-import defunctProgramming from "../schemas/objects/defunctProgramming";
+import textBlock from "../schemas/objects/textBlock";
+import headingBlock from "../schemas/objects/headingBlock";
+import imageBlock from "../schemas/objects/imageBlock";
+import galleryBlock from "../schemas/objects/galleryBlock";
 
 export const schemaTypes = [
   project,
@@ -14,8 +15,10 @@ export const schemaTypes = [
   siteSettings,
   archiveItem,
 
-  defunctContext,
-  defunctContextEntry,
-  defunctProgramming,
-  
+  textBlock,
+  headingBlock,
+  imageBlock,
+  galleryBlock,
+
+
 ];
