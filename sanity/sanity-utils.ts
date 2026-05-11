@@ -35,7 +35,59 @@ export async function getProject(slug: string): Promise<Project> {
         "slug": slug.current,
         "frontcover": frontcover.asset->url,
         alt,
-        content
+        content,
+
+        defunctContextData{
+          research[]{
+            title,
+            "slug": slug.current,
+            description,
+            content,
+            images[]{
+              asset->{
+                url
+              }
+            }
+          },
+
+          programming{
+            commissioned[]{
+              title,
+              "slug": slug.current,
+              description,
+              content,
+              images[]{
+                asset->{
+                  url
+                }
+              }
+            },
+
+            facilitated[]{
+              title,
+              "slug": slug.current,
+              description,
+              content,
+              images[]{
+                asset->{
+                  url
+                }
+              }
+            }
+          },
+
+          publishing[]{
+            title,
+            "slug": slug.current,
+            description,
+            content,
+            images[]{
+              asset->{
+                url
+              }
+            }
+          }
+        }
       }`,
       { slug }
     );

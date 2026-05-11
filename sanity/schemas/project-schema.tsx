@@ -1,36 +1,39 @@
 const project = {
+  name: "project",
+  title: "Project",
+  type: "document",
 
-    name: "project",
-    title: "Project",
-    type: "document",
-    fields: [
-       {
+  fields: [
+    {
       name: "title",
       title: "Title",
       type: "string",
     },
+
     {
       name: "author",
       title: "Author",
       type: "string",
     },
+
     {
       name: "slug",
       title: "Slug",
       type: "slug",
-      options: { source: "title"}
+      options: { source: "title" }
     },
+
     {
       name: "frontcover",
       title: "Front Cover",
       type: "image",
     },
+
     {
       name: "alt",
       title: "Alt Text",
       type: "string",
       options: { source: "title" }
-
     },
 
     {
@@ -38,10 +41,19 @@ const project = {
       title: "Content",
       type: "array",
       of: [{ type: "block" }],
-      //this allows for rich text editing
     },
-    ]
 
+    // ADD THIS
+    {
+      name: "defunctContextData",
+      title: "defunct context data",
+      type: "defunctContext",
+
+      // Optional but recommended
+      //hidden: ({ document }: any) =>
+      //  document?.title !== "Defunct Context",
+    },
+  ]
 }
 
-export default project
+export default project;
