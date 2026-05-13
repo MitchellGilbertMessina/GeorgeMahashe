@@ -1,6 +1,8 @@
-import {defineConfig} from 'sanity';
-import {structureTool} from 'sanity/structure'
+import { defineConfig } from 'sanity';
+import { structureTool } from "sanity/structure";
+import { structure } from "./sanity/structure";
 import { schemaTypes } from "./sanity/schemaTypes";
+
 
 const config = defineConfig({
 
@@ -9,8 +11,12 @@ const config = defineConfig({
     title: "George Mahashe",
     apiVersion: "2024-04-30",
     basePath: "/admin",
-    plugins: [structureTool()],
-    schema: {types: schemaTypes},
+    plugins: [
+        structureTool({
+            structure,
+        }),
+    ],
+    schema: { types: schemaTypes },
     scheduledPublishing: { enabled: true, showReleasesBanner: false },
     //hello
 
