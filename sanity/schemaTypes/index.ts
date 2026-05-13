@@ -8,6 +8,7 @@ import textBlock from "../schemas/objects/textBlock";
 import headingBlock from "../schemas/objects/headingBlock";
 import imageBlock from "../schemas/objects/imageBlock";
 import galleryBlock from "../schemas/objects/galleryBlock";
+import projectReferenceBlock from "../schemas/objects/projectReferenceBlock";
 
 export const schemaTypes = [
   project,
@@ -19,6 +20,7 @@ export const schemaTypes = [
   headingBlock,
   imageBlock,
   galleryBlock,
+  projectReferenceBlock,
 
 
 ];

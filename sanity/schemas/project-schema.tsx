@@ -95,7 +95,37 @@ const project = {
         { type: "imageBlock" },
         { type: "galleryBlock" },
         { type: "headingBlock" },
+        { type: "projectReferenceBlock" },
       ],
+    },
+
+    // SPATIAL FIELDS FOR LAYOUT (USED IN PAGE BUILDER BLOCKS)
+    {
+      name: "x",
+      title: "X Position",
+      type: "number",
+      initialValue: 0,
+    },
+
+    {
+      name: "y",
+      title: "Y Position",
+      type: "number",
+      initialValue: 0,
+    },
+
+    {
+      name: "width",
+      title: "Width",
+      type: "number",
+      initialValue: 400,
+    },
+
+    {
+      name: "rotation",
+      title: "Rotation",
+      type: "number",
+      initialValue: 0,
     },
   ],
 };
