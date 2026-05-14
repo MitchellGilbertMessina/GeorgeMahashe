@@ -5,13 +5,18 @@ import {
   useMotionValue,
   useSpring,
   useAnimationFrame,
+  useTransform,
 } from "framer-motion";
 
 import { useEffect } from "react";
 
-export default function IridescentBackground() {
+export default function IridescentBackground({
+  opacity = 0.75, // 🎛️ GLOBAL CONTROL
+}: {
+  opacity?: number;
+}) {
   // -----------------------------
-  // MOUSE MOTION (STRONGER)
+  // MOUSE POSITION
   // -----------------------------
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
@@ -27,7 +32,22 @@ export default function IridescentBackground() {
   });
 
   // -----------------------------
-  // AMBIENT DRIFT (slightly faster)
+  // ANGLE (for iridescence rotation)
+  // -----------------------------
+  const angle = useMotionValue(0);
+
+  const smoothAngle = useSpring(angle, {
+    stiffness: 35,
+    damping: 25,
+  });
+
+  const angleDeg = useTransform(
+    smoothAngle,
+    (a) => (a * 180) / Math.PI
+  );
+
+  // -----------------------------
+  // AMBIENT DRIFT
   // -----------------------------
   const drift = useMotionValue(0);
   const driftSpring = useSpring(drift, {
@@ -35,24 +55,39 @@ export default function IridescentBackground() {
     damping: 28,
   });
 
+  // -----------------------------
+  // MOUSE INPUT
+  // -----------------------------
   useEffect(() => {
     const handleMove = (e: MouseEvent) => {
-      mouseX.set(
-        (e.clientX / window.innerWidth - 0.5) * 220
-      );
+      const x =
+        e.clientX / window.innerWidth - 0.5;
+      const y =
+        e.clientY / window.innerHeight - 0.5;
 
-      mouseY.set(
-        (e.clientY / window.innerHeight - 0.5) * 220
-      );
+      // stronger parallax
+      mouseX.set(x * 220);
+      mouseY.set(y * 220);
+
+      // angle from center
+      const a = Math.atan2(y, x);
+      angle.set(a);
     };
 
     window.addEventListener("mousemove", handleMove);
-    return () =>
-      window.removeEventListener("mousemove", handleMove);
-  }, [mouseX, mouseY]);
 
+    return () =>
+      window.removeEventListener(
+        "mousemove",
+        handleMove
+      );
+  }, [mouseX, mouseY, angle]);
+
+  // -----------------------------
+  // CONTINUOUS DRIFT
+  // -----------------------------
   useAnimationFrame((t) => {
-    drift.set(Math.sin(t / 6000) * 35);
+    drift.set(Math.sin(t / 7000) * 35);
   });
 
   return (
@@ -62,7 +97,7 @@ export default function IridescentBackground() {
         -z-10
         overflow-hidden
         pointer-events-none
-        bg-white
+        bg-[#f8f6f1]
       "
     >
       {/* ========================= */}
@@ -73,48 +108,58 @@ export default function IridescentBackground() {
           x: smoothX,
           y: smoothY,
           rotate: driftSpring,
+          opacity: opacity, // 🎛️ CONTROLLED HERE
         }}
         className="
           absolute
           inset-[-25%]
-          opacity-75
         "
       >
-        <div
+        <motion.div
+          style={{
+            rotate: angleDeg,
+          }}
           className="
             w-full
             h-full
-            blur-[95px]
+            blur-[100px]
           "
-          style={{
-            background: `
-              conic-gradient(
-                from 180deg at 50% 50%,
+        >
+          <div
+            className="
+              w-full
+              h-full
+            "
+            style={{
+              background: `
+                conic-gradient(
+                  from 180deg at 50% 50%,
 
-                rgba(255, 245, 210, 0.95),
-                rgba(255, 220, 240, 0.70),
-                rgba(210, 240, 255, 0.70),
-                rgba(255, 235, 200, 0.95),
-                rgba(255, 245, 210, 0.95)
-              )
-            `,
-          }}
-        />
+                  rgba(255, 245, 210, 0.95),
+                  rgba(255, 220, 240, 0.70),
+                  rgba(210, 240, 255, 0.70),
+                  rgba(255, 235, 200, 0.95),
+                  rgba(255, 245, 210, 0.95)
+                )
+              `,
+            }}
+          />
+        </motion.div>
       </motion.div>
 
       {/* ========================= */}
-      {/* SECONDARY COLOR FIELD */}
+      {/* SECONDARY LAYER */}
       {/* ========================= */}
       <motion.div
         style={{
           x: smoothX,
           y: smoothY,
           rotate: driftSpring,
+          opacity: opacity * 0.45, // 🎛️ scaled control
         }}
         className="
           absolute
           inset-[-35%]
-          opacity-45
           mix-blend-multiply
         "
       >
@@ -122,23 +167,23 @@ export default function IridescentBackground() {
           className="
             w-full
             h-full
-            blur-[120px]
+            blur-[140px]
           "
           style={{
             background: `
               radial-gradient(
-                circle at 25% 30%,
-                rgba(255, 210, 170, 0.65),
+                circle at 30% 30%,
+                rgba(255, 230, 180, 0.7),
                 transparent 45%
               ),
               radial-gradient(
-                circle at 70% 55%,
-                rgba(220, 235, 255, 0.55),
+                circle at 70% 60%,
+                rgba(255, 245, 220, 0.6),
                 transparent 50%
               ),
               radial-gradient(
                 circle at 50% 80%,
-                rgba(255, 200, 230, 0.45),
+                rgba(220, 235, 255, 0.35),
                 transparent 45%
               )
             `,

@@ -9,25 +9,28 @@ type Props = {
 
 const tabs = [
   "Bio",
-  "Contact",
   "Exhibitions",
   "Published Texts",
   "Other Websites",
 ] as const;
 
+type Tab = (typeof tabs)[number];
+
 export default function AboutTabs({ data }: Props) {
-  const [activeTab, setActiveTab] = useState<(typeof tabs)[number]>("Bio");
+  const [activeTab, setActiveTab] = useState<Tab>("Bio");
 
   return (
     <div className="w-full">
-      {/* TAB HEADER */}
-      <div className="w-full border-b border-gray-200 bg-white py-6">
-        <div className="max-w-5xl mx-auto flex gap-8 px-6 overflow-x-auto">
+
+      {/* TAB HEADER (UPDATED) */}
+      <div className="w-full bg-transparent py-6">
+        <div className="max-w-5xl mx-auto flex justify-between sm:justify-start sm:gap-8 px-4 sm:px-6 overflow-x-auto text-xs sm:text-sm">
+
           {tabs.map((tab) => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
-              className="relative text-sm whitespace-nowrap"
+              className="relative whitespace-nowrap flex-shrink-0"
             >
               {/* Invisible bold version to lock width */}
               <span className="font-bold opacity-0 absolute">
@@ -36,85 +39,81 @@ export default function AboutTabs({ data }: Props) {
 
               {/* Visible text */}
               <span
-                className={`transition ${activeTab === tab
+                className={`transition ${
+                  activeTab === tab
                     ? "font-bold"
-                    : "font-normal opacity-60 hover:opacity-100"
-                  }`}
+                    : "font-normal opacity-80 hover:opacity-100"
+                }`}
               >
                 {tab}
               </span>
             </button>
           ))}
+
         </div>
       </div>
 
       {/* CONTENT AREA */}
       <div className="max-w-5xl mx-auto px-6 pt-14 pb-10">
-        {activeTab === "Bio" && (
-          <p className="text-base leading-relaxed">{data.bio}</p>
-        )}
 
-        {activeTab === "Contact" && (
-          <div className="space-y-2">
-            <p>{data.contactDetails?.email}</p>
-            <p>{data.contactDetails?.phone}</p>
-            <p>{data.contactDetails?.location}</p>
-
-            {data.contactDetails?.socials?.length > 0 && (
-              <div className="pt-4 space-y-1">
-                {data.contactDetails.socials.map((s: any, i: number) => (
-                  <a
-                    key={i}
-                    href={s.url}
-                    target="_blank"
-                    className="block underline"
-                  >
-                    {s.platform}
-                  </a>
-                ))}
-              </div>
-            )}
+        {activeTab === "Bio" && data.bio && (
+          <div className="space-y-6 leading-relaxed">
+            <PortableText value={data.bio} />
           </div>
         )}
 
-        {activeTab === "Exhibitions" && (
-          <PortableText value={data.exhibitions} />
+        {activeTab === "Exhibitions" && data.exhibitions && (
+          <div className="space-y-6 leading-relaxed">
+            <PortableText value={data.exhibitions} />
+          </div>
         )}
 
-        {activeTab === "Published Texts" && (
-          <PortableText value={data.publishedTexts} />
+        {activeTab === "Published Texts" && data.publishedTexts && (
+          <div className="space-y-6 leading-relaxed">
+            <PortableText value={data.publishedTexts} />
+          </div>
         )}
 
         {activeTab === "Other Websites" && (
-          <div className="grid gap-5 md:grid-cols-2">
+          <div className="flex flex-col gap-10">
+
             {data.otherWebsites?.map((item: any, i: number) => (
               <a
                 key={i}
                 href={item.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="border border-gray-200 rounded-xl overflow-hidden hover:shadow-md transition"
+                className="group"
               >
+                {/* IMAGE (no crop, full width) */}
                 {item.image?.asset?.url && (
-                  <img
-                    src={item.image.asset.url}
-                    alt={item.title}
-                    className="w-full h-48 object-cover"
-                  />
+                  <div className="w-full mb-3">
+                    <img
+                      src={item.image.asset.url}
+                      alt={item.title}
+                      className="w-full h-auto object-contain"
+                    />
+                  </div>
                 )}
 
-                <div className="p-4">
-                  <h3 className="font-medium">{item.title}</h3>
+                {/* TEXT */}
+                <div className="space-y-1">
+                  <h3 className="font-medium hover-accent transition">
+                    {item.title}
+                  </h3>
+
                   {item.description && (
-                    <p className="text-sm opacity-70 mt-1">
+                    <p className="text-sm opacity-70 leading-relaxed">
                       {item.description}
                     </p>
                   )}
                 </div>
               </a>
             ))}
+
           </div>
         )}
+
       </div>
     </div>
   );

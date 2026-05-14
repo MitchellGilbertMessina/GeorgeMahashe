@@ -13,13 +13,26 @@ export default {
     },
 
     {
-      name: 'bio',
-      title: 'Bio',
-      type: 'text',
-      rows: 6
+      name: "bio",
+      title: "Bio",
+      type: "array",
+      of: [
+        {
+          type: "block",
+          styles: [
+            { title: "Normal", value: "normal" }
+          ],
+          marks: {
+            decorators: [
+              { title: "Bold", value: "strong" },
+              { title: "Italic", value: "em" }
+            ]
+          }
+        }
+      ]
     },
 
-    {
+    /*{
       name: 'contactDetails',
       title: 'Contact Details',
       type: 'object',
@@ -42,7 +55,7 @@ export default {
           ]
         }
       ]
-    },
+    },*/
 
     {
       name: 'exhibitions',

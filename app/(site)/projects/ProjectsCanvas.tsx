@@ -46,7 +46,9 @@ export default function ProjectsCanvas({
         className="
           hidden md:block
           relative w-full min-h-[2500px]
-          overflow-hidden bg-white
+          overflow-hidden bg-white/20
+        
+
         "
       >
         {projects.map((project) => {
@@ -115,7 +117,7 @@ export default function ProjectsCanvas({
                     </div>
                   )}
 
-                  <div className="pt-3 bg-white">
+                  <div className="pt-3 bg-transparent">
                     <h2 className="text-sm uppercase tracking-wide">
                       {project.title}
                     </h2>

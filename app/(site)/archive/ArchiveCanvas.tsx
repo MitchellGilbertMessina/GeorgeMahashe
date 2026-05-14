@@ -40,7 +40,7 @@ export default function ArchiveCanvas({
   const [highestZ, setHighestZ] = useState(1);
 
   return (
-    <div className="relative w-full h-[3000px] overflow-hidden bg-white" /*border border-red-500*/> 
+    <div className="relative w-full h-[3000px] overflow-hidden bg-white/20" /*border border-red-500*/> 
       {items.map((item) => {
         const savedPosition =
           positions[item._id] || {
