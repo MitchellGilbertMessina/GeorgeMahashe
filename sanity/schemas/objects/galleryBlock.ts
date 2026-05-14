@@ -14,4 +14,30 @@ export default defineType({
       of: [{ type: "image" }],
     },
   ],
+  preview: {
+
+    select: {
+      images: "images",
+    },
+
+    prepare({
+      images,
+    }: {
+      images?: any[];
+    }) {
+
+      const count =
+        images?.length || 0;
+
+      return {
+
+        title:
+          "Gallery Block",
+
+        subtitle:
+          `${count} image${count === 1 ? "" : "s"
+          }`,
+      };
+    },
+  },
 });

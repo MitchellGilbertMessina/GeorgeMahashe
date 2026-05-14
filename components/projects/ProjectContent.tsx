@@ -32,11 +32,6 @@ export default function ProjectContent({
           {project.title}
         </h1>
 
-        {project.shortDescription && (
-          <p className="text-lg text-neutral-500">
-            {project.shortDescription}
-          </p>
-        )}
       </header>
 
       {/* ======================================== */}

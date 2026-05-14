@@ -1,10 +1,16 @@
 const project = {
+
   name: "project",
+
   title: "Project",
+
   type: "document",
 
   fields: [
+
+    // =================================================
     // BASIC INFO
+    // =================================================
 
     {
       name: "title",
@@ -16,15 +22,10 @@ const project = {
       name: "slug",
       title: "Slug",
       type: "slug",
+
       options: {
         source: "title",
       },
-    },
-
-    {
-      name: "author",
-      title: "Author",
-      type: "string",
     },
 
     {
@@ -39,55 +40,52 @@ const project = {
       type: "string",
     },
 
+    // =================================================
+    // ONLY FOR MAIN PROJECTS
+    // =================================================
+
     {
       name: "shortDescription",
       title: "Short Description",
       type: "text",
+
+      hidden: ({ document }: any) =>
+        !!document?.parentProject,
     },
 
-    // PROJECT TYPE
-
-    {
-      name: "projectType",
-      title: "Project Type",
-      type: "string",
-
-      options: {
-        list: [
-          { title: "Main Project", value: "main-project" },
-          { title: "Research", value: "research" },
-          { title: "Programming", value: "programming" },
-          { title: "Publishing", value: "publishing" },
-          { title: "Workshop", value: "workshop" },
-          { title: "Residency", value: "residency" },
-          { title: "Lecture / Talk", value: "lecture" },
-          { title: "Subproject", value: "subproject" },
-        ],
-      },
-    },
-
+    // =================================================
     // HIERARCHY
+    // =================================================
 
     {
       name: "parentProject",
       title: "Parent Project",
       type: "reference",
+
       to: [{ type: "project" }],
     },
 
-    // ORDERING
+    // =================================================
+    // ONLY FOR MAIN PROJECTS
+    // =================================================
 
     {
       name: "orderRank",
       title: "Order Rank",
       type: "number",
+
+      hidden: ({ document }: any) =>
+        !!document?.parentProject,
     },
 
-    // FLEXIBLE PAGE BUILDER
+    // =================================================
+    // PAGE BUILDER
+    // =================================================
 
     {
       name: "pageBuilder",
       title: "Page Builder",
+
       type: "array",
 
       of: [
@@ -99,33 +97,57 @@ const project = {
       ],
     },
 
-    // SPATIAL FIELDS FOR LAYOUT (USED IN PAGE BUILDER BLOCKS)
+    // =================================================
+    // SPATIAL FIELDS
+    // ONLY USED FOR MAIN PROJECTS CANVAS
+    // =================================================
+
     {
       name: "x",
       title: "X Position",
+
       type: "number",
+
       initialValue: 0,
+
+      hidden: ({ document }: any) =>
+        !!document?.parentProject,
     },
 
     {
       name: "y",
       title: "Y Position",
+
       type: "number",
+
       initialValue: 0,
+
+      hidden: ({ document }: any) =>
+        !!document?.parentProject,
     },
 
     {
       name: "width",
       title: "Width",
+
       type: "number",
+
       initialValue: 400,
+
+      hidden: ({ document }: any) =>
+        !!document?.parentProject,
     },
 
     {
       name: "rotation",
       title: "Rotation",
+
       type: "number",
+
       initialValue: 0,
+
+      hidden: ({ document }: any) =>
+        !!document?.parentProject,
     },
   ],
 };

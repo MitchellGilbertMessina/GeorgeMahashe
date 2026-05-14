@@ -35,4 +35,18 @@ export default defineType({
             initialValue: "inline",
         },
     ],
+    preview: {
+        select: {
+            title: "project.title",
+            image: "project.heroImage",
+        },
+
+        prepare({ title, image }) {
+            return {
+                title: "Project Reference",
+                subtitle: title || "Untitled Project",
+                media: image,
+            };
+        },
+    },
 });

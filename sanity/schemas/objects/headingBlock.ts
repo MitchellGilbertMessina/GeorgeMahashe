@@ -12,4 +12,28 @@ export default defineType({
       type: "string",
     },
   ],
+  preview: {
+
+  select: {
+    heading: "heading",
+  },
+
+  prepare({
+    heading,
+  }: {
+    heading?: string;
+  }) {
+
+    return {
+
+      title:
+        `Heading Block`,
+
+      subtitle:
+        heading
+          ? heading
+          : "Untitled Heading",
+    };
+  },
+},
 });

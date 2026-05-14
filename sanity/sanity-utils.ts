@@ -25,14 +25,13 @@ export async function getProjects(): Promise<Project[]> {
 
           title,
 
-          "slug": slug.current,
+          "slug":
+            slug.current,
 
           "heroImage":
             heroImage.asset->url,
 
           shortDescription,
-
-          projectType,
 
           x,
           y,
@@ -77,23 +76,14 @@ export async function getProject(
           _createdAt,
 
           title,
-          author,
 
-          "slug": slug.current,
+          "slug":
+            slug.current,
 
           "heroImage":
             heroImage.asset->url,
 
           alt,
-
-          shortDescription,
-
-          projectType,
-          orderRank,
-
-          // =====================================
-          // PARENT PROJECT
-          // =====================================
 
           parentProject->{
             _id,
@@ -112,7 +102,7 @@ export async function getProject(
             ...,
 
             // =================================
-            // IMAGE BLOCK IMAGE RESOLUTION
+            // IMAGE BLOCKS
             // =================================
 
             image{
@@ -144,8 +134,6 @@ export async function getProject(
                 heroImage.asset->url,
 
               alt,
-
-              shortDescription,
 
               // =============================
               // NESTED PAGE BUILDER
@@ -184,8 +172,6 @@ export async function getProject(
                     heroImage.asset->url,
 
                   alt,
-
-                  shortDescription,
 
                   pageBuilder[]{
 

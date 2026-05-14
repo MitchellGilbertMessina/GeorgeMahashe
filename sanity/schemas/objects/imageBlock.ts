@@ -18,4 +18,17 @@ export default defineType({
       type: "string",
     },
   ],
+  preview: {
+    select: {
+      media: "image",
+      caption: "caption",
+    },
+    prepare({ media, caption }) {
+      return {
+        title: "Image Block",
+        subtitle: caption || "Image",
+        media,
+      };
+    },
+  },
 });
