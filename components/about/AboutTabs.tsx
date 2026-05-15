@@ -2,10 +2,38 @@
 
 import { useState } from "react";
 import { PortableText } from "@portabletext/react";
+import Image from "next/image";
+import type { PortableTextBlock } from "@portabletext/types";
+
+// =====================================================
+// TYPES
+// =====================================================
+
+type WebsiteItem = {
+  url: string;
+  title: string;
+  description?: string;
+  image?: {
+    asset?: {
+      url: string;
+    };
+  };
+};
+
+type TabData = {
+  bio?: PortableTextBlock[];
+  exhibitions?: PortableTextBlock[];
+  publishedTexts?: PortableTextBlock[];
+  otherWebsites?: WebsiteItem[];
+};
 
 type Props = {
-  data: any;
+  data: TabData;
 };
+
+// =====================================================
+// TABS
+// =====================================================
 
 const tabs = [
   "Bio",
@@ -16,13 +44,17 @@ const tabs = [
 
 type Tab = (typeof tabs)[number];
 
+// =====================================================
+// COMPONENT
+// =====================================================
+
 export default function AboutTabs({ data }: Props) {
   const [activeTab, setActiveTab] = useState<Tab>("Bio");
 
   return (
     <div className="w-full">
 
-      {/* TAB HEADER (UPDATED) */}
+      {/* TAB HEADER */}
       <div className="w-full bg-transparent py-6">
         <div className="max-w-5xl mx-auto flex justify-between sm:justify-start sm:gap-8 px-4 sm:px-6 overflow-x-auto text-xs sm:text-sm">
 
@@ -32,12 +64,10 @@ export default function AboutTabs({ data }: Props) {
               onClick={() => setActiveTab(tab)}
               className="relative whitespace-nowrap flex-shrink-0"
             >
-              {/* Invisible bold version to lock width */}
               <span className="font-bold opacity-0 absolute">
                 {tab}
               </span>
 
-              {/* Visible text */}
               <span
                 className={`transition ${
                   activeTab === tab
@@ -53,7 +83,7 @@ export default function AboutTabs({ data }: Props) {
         </div>
       </div>
 
-      {/* CONTENT AREA */}
+      {/* CONTENT */}
       <div className="max-w-5xl mx-auto px-6 pt-14 pb-10">
 
         {activeTab === "Bio" && data.bio && (
@@ -77,7 +107,7 @@ export default function AboutTabs({ data }: Props) {
         {activeTab === "Other Websites" && (
           <div className="flex flex-col gap-10">
 
-            {data.otherWebsites?.map((item: any, i: number) => (
+            {data.otherWebsites?.map((item, i) => (
               <a
                 key={i}
                 href={item.url}
@@ -85,12 +115,14 @@ export default function AboutTabs({ data }: Props) {
                 rel="noopener noreferrer"
                 className="group"
               >
-                {/* IMAGE (no crop, full width) */}
+                {/* IMAGE */}
                 {item.image?.asset?.url && (
                   <div className="w-full mb-3">
-                    <img
+                    <Image
                       src={item.image.asset.url}
                       alt={item.title}
+                      width={1200}
+                      height={800}
                       className="w-full h-auto object-contain"
                     />
                   </div>

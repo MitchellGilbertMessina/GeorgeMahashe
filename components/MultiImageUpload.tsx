@@ -4,11 +4,27 @@ import { useCallback, useRef } from "react";
 import { set, useClient } from "sanity";
 import type { ArrayOfObjectsInputProps } from "sanity";
 
+// =====================================================
+// TYPES
+// =====================================================
+
+type ImageItem = {
+  _type: "image";
+  _key: string;
+  asset: {
+    _type: "reference";
+    _ref: string;
+  };
+};
+
+// =====================================================
+// COMPONENT
+// =====================================================
+
 export function MultiImageUpload(props: ArrayOfObjectsInputProps) {
   const { value = [], onChange, renderDefault } = props;
   const inputRef = useRef<HTMLInputElement>(null);
-  
-  // Use Sanity's authenticated client instead of importing yours
+
   const client = useClient({ apiVersion: "2024-01-01" });
 
   const handleFiles = useCallback(
@@ -21,26 +37,30 @@ export function MultiImageUpload(props: ArrayOfObjectsInputProps) {
         )
       );
 
-      const newItems = uploads.map((asset) => ({
+      const newItems: ImageItem[] = uploads.map((asset) => ({
         _type: "image",
-        _key: Math.random().toString(36).slice(2),
+        _key: crypto.randomUUID(),
         asset: {
           _type: "reference",
           _ref: asset._id,
         },
       }));
 
-      onChange(set([...(value as any[]), ...newItems]));
+      const existingItems = value as ImageItem[];
+
+      onChange(set([...(existingItems ?? []), ...newItems]));
     },
     [value, onChange, client]
   );
 
   const handleDrop = useCallback(
-    (e: React.DragEvent) => {
+    (e: React.DragEvent<HTMLDivElement>) => {
       e.preventDefault();
-      if (e.dataTransfer.files?.length) {
-        handleFiles(e.dataTransfer.files);
-      }
+
+      const files = e.dataTransfer.files;
+      if (!files || files.length === 0) return;
+
+      handleFiles(files);
     },
     [handleFiles]
   );
@@ -61,16 +81,17 @@ export function MultiImageUpload(props: ArrayOfObjectsInputProps) {
           background: "#fafafa",
           transition: "border-color 0.2s",
         }}
-        onMouseEnter={(e) =>
-          ((e.currentTarget as HTMLDivElement).style.borderColor = "#0066cc")
-        }
-        onMouseLeave={(e) =>
-          ((e.currentTarget as HTMLDivElement).style.borderColor = "#ccc")
-        }
+        onMouseEnter={(e) => {
+          e.currentTarget.style.borderColor = "#0066cc";
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.borderColor = "#ccc";
+        }}
       >
         <p style={{ margin: 0, color: "#666", fontSize: "14px" }}>
           📁 Click or drag & drop to upload <strong>multiple images</strong> at once
         </p>
+
         <input
           ref={inputRef}
           type="file"
@@ -78,10 +99,11 @@ export function MultiImageUpload(props: ArrayOfObjectsInputProps) {
           multiple
           style={{ display: "none" }}
           onChange={(e) => {
-            if (e.target.files?.length) {
-              handleFiles(e.target.files);
-              e.target.value = "";
-            }
+            const files = e.target.files;
+            if (!files || files.length === 0) return;
+
+            handleFiles(files);
+            e.target.value = "";
           }}
         />
       </div>
