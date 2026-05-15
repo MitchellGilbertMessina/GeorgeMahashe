@@ -1,4 +1,5 @@
 import { defineType } from "sanity";
+import { MultiImageUpload } from "../../../components/MultiImageUpload";
 
 export default defineType({
   name: "galleryBlock",
@@ -10,10 +11,13 @@ export default defineType({
       name: "images",
       title: "Images",
       type: "array",
-
       of: [{ type: "image" }],
+      components: {
+        input: MultiImageUpload, // 👈 plug in here
+      },
     },
   ],
+
   preview: {
 
     select: {

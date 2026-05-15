@@ -11,7 +11,7 @@ import {
 import { useEffect } from "react";
 
 export default function IridescentBackground({
-  opacity = 0.75, // 🎛️ GLOBAL CONTROL
+  opacity = .95, // 🎛️ GLOBAL CONTROL
 }: {
   opacity?: number;
 }) {
@@ -122,7 +122,7 @@ export default function IridescentBackground({
           className="
             w-full
             h-full
-            blur-[100px]
+            blur-[80px]
           "
         >
           <div
@@ -135,11 +135,11 @@ export default function IridescentBackground({
                 conic-gradient(
                   from 180deg at 50% 50%,
 
-                  rgba(255, 245, 210, 0.95),
-                  rgba(255, 220, 240, 0.70),
-                  rgba(210, 240, 255, 0.70),
-                  rgba(255, 235, 200, 0.95),
-                  rgba(255, 245, 210, 0.95)
+                  rgba(255, 245, 210, 1),
+                  rgba(255, 220, 240, 0.95),
+                  rgba(210, 240, 255, 0.95),
+                  rgba(255, 235, 200, 1),
+                  rgba(255, 245, 210, 1)
                 )
               `,
             }}
@@ -155,7 +155,7 @@ export default function IridescentBackground({
           x: smoothX,
           y: smoothY,
           rotate: driftSpring,
-          opacity: opacity * 0.45, // 🎛️ scaled control
+          opacity: opacity * 1.45, // 🎛️ scaled control
         }}
         className="
           absolute

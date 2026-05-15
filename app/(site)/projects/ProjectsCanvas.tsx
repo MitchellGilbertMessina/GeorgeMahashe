@@ -25,7 +25,7 @@ export default function ProjectsCanvas({
   // =========================================================
   // EDIT MODE
   // =========================================================
-  const EDIT_MODE = true;
+  const EDIT_MODE = false;
 
   // =========================================================
   // STATE
@@ -46,7 +46,7 @@ export default function ProjectsCanvas({
         className="
           hidden md:block
           relative w-full min-h-[2500px]
-          overflow-hidden bg-white/20
+          overflow-hidden bg-transparent
         
 
         "
@@ -160,8 +160,8 @@ export default function ProjectsCanvas({
                     </div>
                   )}
 
-                  <div className="pt-3 bg-white">
-                    <h2 className="text-sm uppercase tracking-wide">
+                  <div className="pt-3 bg-transparent">
+                    <h2 className="text-sm tracking-wide">
                       {project.title}
                     </h2>
 

@@ -63,17 +63,12 @@ export default function ProjectContent({
               // TEXT BLOCK
               // ====================================
 
-              case "textBlock":
-                return (
-                  <div
-                    key={index}
-                    className="prose max-w-none"
-                  >
-                    <PortableText
-                      value={block.content}
-                    />
-                  </div>
-                );
+             case "textBlock":
+  return (
+    <div key={index} className="prose prose-sm max-w-none">
+      <PortableText value={block.content} />
+    </div>
+  );
 
               // ====================================
               // HEADING BLOCK
