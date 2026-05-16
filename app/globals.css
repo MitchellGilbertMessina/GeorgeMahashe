@@ -41,7 +41,17 @@
 ----------------------------- */
 body {
   color: var(--foreground);
-  background: transparent;
+
+  /* MOBILE FALLBACK BACKGROUND */
+  background:
+    linear-gradient(
+      135deg,
+      #f8f6f1 0%,
+      #fff6e8 40%,
+      #f6f6ff 100%
+    );
+
+  background-attachment: fixed;
 }
 
 /* -----------------------------
