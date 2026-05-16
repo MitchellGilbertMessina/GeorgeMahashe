@@ -39,12 +39,13 @@ export default function SiteLayout({
       `}
     >
       <IridescentBackground opacity={0.35} />
+      <div className="relative z-10">
+        <Header />
 
-      <Header />
+        <main>{children}</main>
 
-      <main>{children}</main>
-
-      <Footer />
+        <Footer />
+      </div>
     </div>
   );
 }
