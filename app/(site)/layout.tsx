@@ -39,7 +39,7 @@ export default function SiteLayout({
       `}
     >
       <IridescentBackground opacity={0.35} />
-      <div className="relative z-10">
+      <div className="relative z-10 isolate">
         <Header />
 
         <main>{children}</main>
