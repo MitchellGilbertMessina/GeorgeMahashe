@@ -93,13 +93,13 @@ export default function IridescentBackground({
   return (
     <div
       className="
-    hidden md:block
-    fixed inset-0
-    -z-10
-    overflow-hidden
-    pointer-events-none
-    bg-[#f8f6f1]
-  "
+  hidden md:block
+  fixed inset-0
+  z-0
+  overflow-hidden
+  pointer-events-none
+  bg-[#f8f6f1]
+"
     >
       {/* ========================= */}
       {/* MAIN IRIDESCENT FIELD */}
