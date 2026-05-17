@@ -1,3 +1,5 @@
+export const revalidate = 60;
+
 import { getArchiveItems } from "@/sanity/sanity-utils";
 import ArchiveCanvas from "./ArchiveCanvas";
 
