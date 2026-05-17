@@ -160,7 +160,6 @@ export default function IridescentBackground({
         className="
           absolute
           inset-[-35%]
-          mix-blend-multiply
         "
       >
         <div
