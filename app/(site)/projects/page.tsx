@@ -1,3 +1,5 @@
+export const revalidate = 60;
+
 import { getProjects } from "@/sanity/sanity-utils";
 
 import ProjectsCanvas from "./ProjectsCanvas";

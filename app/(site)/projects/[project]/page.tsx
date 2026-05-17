@@ -1,3 +1,5 @@
+export const revalidate = 60;
+
 import { getProject } from "@/sanity/sanity-utils";
 import ProjectContent from "@/components/projects/ProjectContent";
 import Link from "next/link";
