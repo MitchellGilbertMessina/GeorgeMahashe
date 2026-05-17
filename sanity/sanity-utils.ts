@@ -38,7 +38,13 @@ export async function getProjects(): Promise<Project[]> {
           width,
           rotation,
         }
-      `
+      `,
+    {},
+    {
+      next: {
+        revalidate: 60,
+      },
+    }
     );
 
     return projects ?? [];
@@ -195,7 +201,13 @@ export async function getProject(
           }
         }
       `,
-      { slug }
+      
+      { slug },
+    {
+      next: {
+        revalidate: 60,
+      },
+    }
     );
 
     return project ?? null;
@@ -298,6 +310,12 @@ export async function getArchiveItems() {
 
         rotation
       }
-    `
+    `,
+    {},
+    {
+      next: {
+        revalidate: 60,
+      },
+    }
   );
 }
