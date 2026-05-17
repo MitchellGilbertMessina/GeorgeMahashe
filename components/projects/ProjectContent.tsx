@@ -84,12 +84,13 @@ export default function ProjectContent({
       {/* TITLE */}
       {/* ========================================= */}
 
-      <header className="space-y-4">
+      <header className="space-y-2">
         <h1
           className="
             text-4xl
             font-normal
             tracking-tight
+            font-metana
           "
         >
           {project.title}
@@ -130,6 +131,8 @@ export default function ProjectContent({
                   key={index}
                   className="
                     max-w-3xl
+                    pl-8 md:pl-16
+
                   "
                 >
                   <RichText

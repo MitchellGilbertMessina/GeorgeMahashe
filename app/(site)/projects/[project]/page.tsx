@@ -31,17 +31,15 @@ export default async function ProjectPage({
       className="
         max-w-5xl
         mx-auto
-        px-4
         py-20
       "
     >
 
-      <div className="mb-12">
+      <div className="mb-4">
         <Link
           href="/projects"
           className="
       text-sm
-      uppercase
       tracking-wide
       hover:opacity-50
       transition-opacity
