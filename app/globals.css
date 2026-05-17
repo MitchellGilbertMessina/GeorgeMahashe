@@ -40,7 +40,8 @@
    DO NOT BLOCK BACKGROUND HERE
 ----------------------------- */
 body {
-  color: var(--foreground);
+  /*color: var(--foreground);*/
+  color: #171717;
 
   /* MOBILE FALLBACK BACKGROUND */
   background:

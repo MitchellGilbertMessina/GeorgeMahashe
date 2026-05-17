@@ -36,6 +36,7 @@ export default function SiteLayout({
         min-h-dvh
         relative
         isolate
+        text-neutral-900 
       `}
     >
       <IridescentBackground opacity={0.35} />
