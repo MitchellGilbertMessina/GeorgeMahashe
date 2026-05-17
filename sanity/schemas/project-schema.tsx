@@ -45,13 +45,16 @@ const project = {
     // =================================================
 
     {
-      name: "shortDescription",
-      title: "Short Description",
-      type: "text",
+  name: "shortDescription",
+  title: "Short Description",
 
-      hidden: ({ document }: any) =>
-        !!document?.parentProject,
-    },
+  type: "array",
+
+  of: [{ type: "block" }],
+
+  hidden: ({ document }: any) =>
+    !!document?.parentProject,
+},
 
     // =================================================
     // HIERARCHY

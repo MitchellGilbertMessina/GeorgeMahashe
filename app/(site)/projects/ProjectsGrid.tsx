@@ -2,6 +2,8 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import RichText from "@/components/RichText";
+
 
 type Project = {
     _id: string;
@@ -70,9 +72,9 @@ export default function ProjectsGrid({
                             </h2>
 
                             {project.shortDescription && (
-                                <p className="mt-3 text-sm text-neutral-600 leading-relaxed">
-                                    {project.shortDescription}
-                                </p>
+                                <div className="mt-3">
+                                    <RichText value={project.shortDescription} />
+                                </div>
                             )}
                         </div>
                     </Link>

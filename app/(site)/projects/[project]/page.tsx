@@ -44,6 +44,7 @@ export default async function ProjectPage({
       tracking-wide
       hover:opacity-50
       transition-opacity
+      
     "
         >
           ← Back to Projects
