@@ -1,12 +1,23 @@
 "use client";
 
-import { PortableText } from "@portabletext/react";
+import { PortableText, PortableTextComponents } from "@portabletext/react";
+import type { PortableTextBlock } from "@portabletext/types";
 
-const components = {
+// =====================================================
+// TYPES
+// =====================================================
 
+type RichTextProps = {
+  value: PortableTextBlock[];
+};
+
+// =====================================================
+// COMPONENTS
+// =====================================================
+
+const components: PortableTextComponents = {
   block: {
-
-    normal: ({ children }: any) => (
+    normal: ({ children }) => (
       <p
         className="
           text-sm
@@ -21,20 +32,14 @@ const components = {
   },
 };
 
-export default function RichText({
-  value,
-}: {
-  value: any;
-}) {
+// =====================================================
+// COMPONENT
+// =====================================================
 
+export default function RichText({ value }: RichTextProps) {
   return (
     <div className="space-y-6">
-
-      <PortableText
-        value={value}
-        components={components}
-      />
-
+      <PortableText value={value} components={components} />
     </div>
   );
 }
