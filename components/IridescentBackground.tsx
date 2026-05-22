@@ -54,25 +54,38 @@ export default function IridescentBackground({
         bg-[#f8f6f1]
       "
     >
+      <style>{`
+        @keyframes iridescent-spin {
+          from { --conic-angle: 180deg; }
+          to   { --conic-angle: 540deg; }
+        }
+        @property --conic-angle {
+          syntax: '<angle>';
+          inherits: false;
+          initial-value: 180deg;
+        }
+        .mobile-iridescent {
+          animation: iridescent-spin 24s linear infinite;
+          background: conic-gradient(
+            from var(--conic-angle) at 60% 40%,
+            rgba(255, 245, 210, 1),
+            rgba(255, 200, 225, 0.95),
+            rgba(225, 210, 255, 0.92),
+            rgba(210, 235, 255, 0.93),
+            rgba(255, 235, 200, 1),
+            rgba(255, 220, 240, 0.95),
+            rgba(255, 245, 210, 1)
+          );
+          filter: blur(80px);
+        }
+      `}</style>
+
       {/* ========================= */}
-      {/* MOBILE STATIC LAYER       */}
+      {/* MOBILE ANIMATED LAYER     */}
       {/* ========================= */}
       <div
-        className="md:hidden w-full h-full"
-        style={{
-          background: `
-            conic-gradient(
-              from 180deg at 60% 40%,
-              rgba(255, 245, 210, 1),
-              rgba(255, 220, 240, 0.95),
-              rgba(210, 240, 255, 0.95),
-              rgba(255, 235, 200, 1),
-              rgba(255, 245, 210, 1)
-            )
-          `,
-          filter: "blur(80px)",
-          opacity: opacity,
-        }}
+        className="mobile-iridescent md:hidden w-full h-full"
+        style={{ opacity: opacity }}
       />
 
       {/* ========================= */}
@@ -98,9 +111,11 @@ export default function IridescentBackground({
                 conic-gradient(
                   from 180deg at 50% 50%,
                   rgba(255, 245, 210, 1),
-                  rgba(255, 220, 240, 0.95),
-                  rgba(210, 240, 255, 0.95),
+                  rgba(255, 200, 225, 0.95),
+                  rgba(225, 210, 255, 0.92),
+                  rgba(210, 235, 255, 0.93),
                   rgba(255, 235, 200, 1),
+                  rgba(255, 220, 240, 0.95),
                   rgba(255, 245, 210, 1)
                 )
               `,
@@ -127,17 +142,17 @@ export default function IridescentBackground({
             background: `
               radial-gradient(
                 circle at 30% 30%,
-                rgba(255, 230, 180, 0.7),
+                rgba(255, 210, 160, 0.75),
                 transparent 45%
               ),
               radial-gradient(
                 circle at 70% 60%,
-                rgba(255, 245, 220, 0.6),
+                rgba(230, 200, 255, 0.65),
                 transparent 50%
               ),
               radial-gradient(
                 circle at 50% 80%,
-                rgba(220, 235, 255, 0.35),
+                rgba(200, 225, 255, 0.45),
                 transparent 45%
               )
             `,
