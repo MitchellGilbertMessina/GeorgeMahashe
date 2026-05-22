@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { PortableText } from "@portabletext/react";
+import RichText from "@/components/RichText";
 import Image from "next/image";
 import type { PortableTextBlock } from "@portabletext/types";
 
@@ -88,19 +88,19 @@ export default function AboutTabs({ data }: Props) {
 
         {activeTab === "Bio" && data.bio && (
           <div className="space-y-6 leading-relaxed">
-            <PortableText value={data.bio} />
+            <RichText value={data.bio} />
           </div>
         )}
 
         {activeTab === "Exhibitions" && data.exhibitions && (
           <div className="space-y-6 leading-relaxed">
-            <PortableText value={data.exhibitions} />
+            <RichText value={data.exhibitions} />
           </div>
         )}
 
         {activeTab === "Published Texts" && data.publishedTexts && (
           <div className="space-y-6 leading-relaxed">
-            <PortableText value={data.publishedTexts} />
+            <RichText value={data.publishedTexts} />
           </div>
         )}
 
