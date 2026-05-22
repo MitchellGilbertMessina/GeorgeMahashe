@@ -57,4 +57,6 @@ export const structure: StructureResolver = (S) =>
       S.documentTypeListItem("archiveItem"),
 
       S.documentTypeListItem("siteSettings"),
+
+      S.documentTypeListItem("exhibition"), 
     ]);
