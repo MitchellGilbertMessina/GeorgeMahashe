@@ -1,3 +1,5 @@
+export const revalidate = 60;
+
 import { getAbout } from "@/sanity/sanity-utils";
 import AboutTabs from "@/./components/about/AboutTabs";
 
