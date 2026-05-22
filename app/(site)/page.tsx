@@ -1,3 +1,5 @@
+export const revalidate = 60;
+
 import Image from "next/image";
 
 import { getHomepageImages } from "@/sanity/sanity-utils";
