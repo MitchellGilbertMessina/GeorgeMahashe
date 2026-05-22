@@ -319,3 +319,130 @@ export async function getArchiveItems() {
     }
   );
 }
+
+// =====================================================
+// EXHIBITIONS
+// =====================================================
+
+export async function getExhibitions() {
+
+  try {
+
+    const exhibitions = await client.fetch(
+
+      groq`
+        *[_type == "exhibition"]
+        | order(startDate desc)
+        {
+          _id,
+          _createdAt,
+
+          title,
+
+          "slug": slug.current,
+
+          venue,
+          address,
+
+          startDate,
+          endDate,
+
+          "featuredImage": featuredImage.asset->url,
+
+          externalLink,
+
+          relatedProjects[]->{
+            _id,
+            title,
+
+            "slug": slug.current,
+
+            "heroImage": heroImage.asset->url
+          }
+        }
+      `,
+      {},
+      {
+        next: {
+          revalidate: 60,
+        },
+      }
+    );
+
+    return exhibitions ?? [];
+
+  } catch (error) {
+
+    console.error(
+      "Failed to fetch exhibitions:",
+      error
+    );
+
+    return [];
+  }
+}
+
+// =====================================================
+// SINGLE EXHIBITION
+// =====================================================
+
+export async function getExhibition(slug: string) {
+
+  try {
+
+    const exhibition = await client.fetch(
+
+      groq`
+        *[_type == "exhibition" && slug.current == $slug][0]
+        {
+          _id,
+          _createdAt,
+
+          title,
+
+          "slug": slug.current,
+
+          venue,
+          address,
+
+          startDate,
+          endDate,
+
+          "featuredImage": featuredImage.asset->url,
+
+          description,
+
+          externalLink,
+
+          relatedProjects[]->{
+            _id,
+            title,
+
+            "slug": slug.current,
+
+            "heroImage": heroImage.asset->url,
+
+            shortDescription
+          }
+        }
+      `,
+      { slug },
+      {
+        next: {
+          revalidate: 60,
+        },
+      }
+    );
+
+    return exhibition ?? null;
+
+  } catch (error) {
+
+    console.error(
+      "Failed to fetch exhibition:",
+      error
+    );
+
+    return null;
+  }
+}
