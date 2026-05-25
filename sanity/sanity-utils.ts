@@ -303,13 +303,10 @@ export async function getArchiveItems() {
 
         mediaType,
 
-image,
+"imageUrl": image.asset->url,
 "imageCaption": image.caption,
-
 "videoUrl": video.asset->url,
-
 "audioUrl": audio.asset->url,
-
 "pdfUrl": pdf.asset->url,
 
 tags,

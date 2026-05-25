@@ -34,9 +34,7 @@ export default defineType({
 
     defineField({
       name: "mediaType",
-      title: "Media Type",
       type: "string",
-
       options: {
         list: [
           { title: "Image", value: "image" },
@@ -44,77 +42,42 @@ export default defineType({
           { title: "Audio", value: "audio" },
           { title: "PDF", value: "pdf" },
         ],
-
         layout: "radio",
       },
-
       initialValue: "image",
     }),
 
-    // =================================================
-    // IMAGE
-    // =================================================
-
+    // IMAGE ONLY
     defineField({
       name: "image",
-      title: "Image",
       type: "image",
-
-      options: {
-        hotspot: true,
-      },
-
-      fields: [
-
-        defineField({
-          name: "caption",
-          title: "Caption",
-          type: "string",
-        }),
-      ],
+      hidden: ({ parent }) => parent?.mediaType !== "image",
     }),
 
-    // =================================================
-    // VIDEO
-    // =================================================
-
+    // VIDEO ONLY
     defineField({
       name: "video",
-      title: "Video",
       type: "file",
-
-      options: {
-        accept: "video/*",
-      },
+      hidden: ({ parent }) => parent?.mediaType !== "video",
+      options: { accept: "video/*" },
     }),
 
-    // =================================================
-    // AUDIO
-    // =================================================
-
+    // AUDIO ONLY
     defineField({
       name: "audio",
-      title: "Audio",
       type: "file",
-
-      options: {
-        accept: "audio/*",
-      },
+      hidden: ({ parent }) => parent?.mediaType !== "audio",
+      options: { accept: "audio/*" },
     }),
 
-    // =================================================
-    // PDF
-    // =================================================
-
+    // PDF ONLY
     defineField({
       name: "pdf",
-      title: "PDF",
       type: "file",
-
-      options: {
-        accept: ".pdf",
-      },
+      hidden: ({ parent }) => parent?.mediaType !== "pdf",
+      options: { accept: ".pdf" },
     }),
+
 
     // =================================================
     // TAGS
