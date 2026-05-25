@@ -301,7 +301,22 @@ export async function getArchiveItems() {
 
         description,
 
-        image,
+        mediaType,
+
+image,
+"imageCaption": image.caption,
+
+"videoUrl": video.asset->url,
+
+"audioUrl": audio.asset->url,
+
+"pdfUrl": pdf.asset->url,
+
+tags,
+
+featured,
+
+date,
 
         x,
         y,
@@ -349,7 +364,14 @@ export async function getExhibitions() {
 
           "featuredImage": featuredImage.asset->url,
 
-          externalLink,
+          "featuredImageCaption": featuredImage.caption,
+
+          description,
+
+          externalLinks[] {
+            label,
+            url
+          },
 
           relatedProjects[]->{
             _id,

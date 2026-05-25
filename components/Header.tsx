@@ -32,12 +32,16 @@ export default function Header() {
           <Link href="/projects" className="hover:opacity-60 transition">
             Projects
           </Link>
+          <Link href="/exhibitions" className="hover:opacity-60 transition">
+            Exhibitions
+          </Link>
           <Link href="/about" className="hover:opacity-60 transition">
             About
           </Link>
-          <Link href="/archive" className="hover:opacity-60 transition">
+          
+          {/*<Link href="/archive" className="hover:opacity-60 transition">
             Archive
-          </Link>
+          </Link>*/}
         </nav>
 
       </div>

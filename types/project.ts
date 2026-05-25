@@ -1,3 +1,5 @@
+import type { SanityImageSource } from "./sanity";
+
 export type PageBuilderBlock =
   | {
       _type: "textBlock";
@@ -54,4 +56,35 @@ export type Project = {
   };
 
   pageBuilder?: PageBuilderBlock[];
+};
+
+export type ArchiveItem = {
+  _id: string;
+
+  title?: string;
+
+  description?: string;
+
+  mediaType?: "image" | "video" | "audio" | "pdf";
+
+  image?: SanityImageSource;
+
+  imageCaption?: string;
+
+  videoUrl?: string;
+
+  audioUrl?: string;
+
+  pdfUrl?: string;
+
+  tags?: string[];
+
+  featured?: boolean;
+
+  date?: string;
+
+  x: number;
+  y: number;
+  width: number;
+  rotation?: number;
 };

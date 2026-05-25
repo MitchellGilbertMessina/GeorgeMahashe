@@ -102,10 +102,14 @@ export const exhibitionSchema = defineType({
             name: "featuredImage",
             title: "Featured Image",
             type: "image",
-
-            options: {
-                hotspot: true,
-            },
+            options: { hotspot: true },
+            fields: [
+                defineField({
+                    name: "caption",
+                    title: "Caption",
+                    type: "string",
+                }),
+            ],
         }),
 
         // =====================================================
@@ -124,15 +128,7 @@ export const exhibitionSchema = defineType({
             ],
         }),
 
-        // =====================================================
-        // EXTERNAL LINK
-        // =====================================================
-
-        defineField({
-            name: "externalLink",
-            title: "External Link",
-            type: "url",
-        }),
+    
 
         // =====================================================
         // RELATED PROJECTS

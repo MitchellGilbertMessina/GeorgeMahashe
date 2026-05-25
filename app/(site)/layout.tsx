@@ -29,21 +29,19 @@ export default function SiteLayout({
   return (
     <div
       className={`
-        ${geistSans.variable}
-        ${geistMono.variable}
-        antialiased
-
-        min-h-dvh
-        relative
-        isolate
-      `}
+    ${geistSans.variable}
+    ${geistMono.variable}
+    antialiased
+    min-h-dvh
+    relative
+    isolate
+    flex flex-col
+  `}
     >
       <IridescentBackground opacity={0.35} />
-      <div className="relative z-10 isolate">
+      <div className="relative z-10 isolate flex flex-col flex-1">
         <Header />
-
-        <main>{children}</main>
-
+        <main className="flex-1">{children}</main>
         <Footer />
       </div>
     </div>
