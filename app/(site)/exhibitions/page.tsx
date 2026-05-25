@@ -60,27 +60,19 @@ export default async function ExhibitionsPage() {
 
   const now = new Date();
 
-  const upcoming = exhibitions.filter(
-    (e) => new Date(e.startDate) > now
-  );
+  const upcoming = exhibitions.filter((e) => new Date(e.startDate) > now);
 
   const current = exhibitions.filter(
     (e) =>
-      new Date(e.startDate) <= now &&
-      new Date(e.endDate) >= now
+      new Date(e.startDate) <= now && new Date(e.endDate) >= now
   );
 
-  const past = exhibitions.filter(
-    (e) => new Date(e.endDate) < now
-  );
+  const past = exhibitions.filter((e) => new Date(e.endDate) < now);
 
   return (
     <main className="max-w-4xl mx-auto px-6 py-16 space-y-24">
 
-      {/* ================================================= */}
       {/* CURRENT */}
-      {/* ================================================= */}
-
       {current.length > 0 && (
         <section>
           <h2 className="font-metana text-xs uppercase tracking-widest opacity-50 mb-10">
@@ -98,10 +90,7 @@ export default async function ExhibitionsPage() {
         </section>
       )}
 
-      {/* ================================================= */}
       {/* UPCOMING */}
-      {/* ================================================= */}
-
       {upcoming.length > 0 && (
         <section>
           <h2 className="font-metana text-xs uppercase tracking-widest opacity-50 mb-10">
@@ -119,10 +108,7 @@ export default async function ExhibitionsPage() {
         </section>
       )}
 
-      {/* ================================================= */}
       {/* PAST */}
-      {/* ================================================= */}
-
       {past.length > 0 && (
         <section>
           <h2 className="font-metana text-xs uppercase tracking-widest opacity-50 mb-10">
@@ -140,39 +126,28 @@ export default async function ExhibitionsPage() {
         </section>
       )}
 
-      {/* ================================================= */}
-      {/* EMPTY */}
-      {/* ================================================= */}
-
       {exhibitions.length === 0 && (
-        <p className="opacity-40 text-sm">
-          No exhibitions yet.
-        </p>
+        <p className="opacity-40 text-sm">No exhibitions yet.</p>
       )}
     </main>
   );
 }
 
 // =====================================================
-// META (REUSABLE)
+// META
 // =====================================================
 
 function ExhibitionMeta({ exhibition }: { exhibition: Exhibition }) {
   return (
     <>
       <div className="text-sm opacity-50">
-        {formatDateRange(
-          exhibition.startDate,
-          exhibition.endDate
-        )}
+        {formatDateRange(exhibition.startDate, exhibition.endDate)}
       </div>
 
       {exhibition.venue && (
         <div className="text-sm opacity-60">
           {exhibition.venue}
-          {exhibition.address
-            ? `, ${exhibition.address}`
-            : ""}
+          {exhibition.address ? `, ${exhibition.address}` : ""}
         </div>
       )}
     </>
@@ -180,7 +155,7 @@ function ExhibitionMeta({ exhibition }: { exhibition: Exhibition }) {
 }
 
 // =====================================================
-// FEATURED EXHIBITION
+// FEATURED
 // =====================================================
 
 function FeaturedExhibitionCard({
@@ -190,17 +165,11 @@ function FeaturedExhibitionCard({
 }) {
   return (
     <article className="space-y-6">
-
-      {/* TITLE */}
       <div className="space-y-2">
-        <h3 className="font-metana text-3xl">
-          {exhibition.title}
-        </h3>
-
+        <h3 className="font-metana text-3xl">{exhibition.title}</h3>
         <ExhibitionMeta exhibition={exhibition} />
       </div>
 
-      {/* IMAGE */}
       {exhibition.featuredImage && (
         <div className="space-y-2">
           <Image
@@ -219,12 +188,10 @@ function FeaturedExhibitionCard({
         </div>
       )}
 
-      {/* DESCRIPTION */}
       {exhibition.description && (
         <RichText value={exhibition.description} />
       )}
 
-      {/* LINKS */}
       {exhibition.externalLinks?.length ? (
         <div className="flex flex-wrap gap-4 pt-2">
           {exhibition.externalLinks.map((link, index) => (
@@ -245,7 +212,7 @@ function FeaturedExhibitionCard({
 }
 
 // =====================================================
-// PAST EXHIBITION
+// PAST
 // =====================================================
 
 function PastExhibitionCard({
@@ -255,26 +222,16 @@ function PastExhibitionCard({
 }) {
   return (
     <article className="border-t border-gray-200 pt-6">
-
       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2">
-
         <div>
-          <h3 className="font-metana text-xl">
-            {exhibition.title}
-          </h3>
-
+          <h3 className="font-metana text-xl">{exhibition.title}</h3>
           <ExhibitionMeta exhibition={exhibition} />
         </div>
 
         <span className="text-sm opacity-50 shrink-0">
-          {formatDateRange(
-            exhibition.startDate,
-            exhibition.endDate
-          )}
+          {formatDateRange(exhibition.startDate, exhibition.endDate)}
         </span>
-
       </div>
-
     </article>
   );
 }

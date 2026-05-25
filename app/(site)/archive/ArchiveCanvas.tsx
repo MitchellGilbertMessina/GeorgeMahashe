@@ -6,19 +6,25 @@ import Image from "next/image";
 import { urlFor } from "@/sanity/lib/image";
 import type { ArchiveItem } from "@/types/project";
 
-
-export default function ArchiveCanvas({ items }: { items: ArchiveItem[] }) {
+export default function ArchiveCanvas({
+  items,
+}: {
+  items: ArchiveItem[];
+}) {
   const [selected, setSelected] = useState<ArchiveItem | null>(null);
-  const [positions, setPositions] = useState<Record<string, { x: number; y: number }>>({});
+  const [positions, setPositions] = useState<
+    Record<string, { x: number; y: number }>
+  >({});
   const [highestZ, setHighestZ] = useState(1);
+
   const canvasRef = useRef<HTMLDivElement>(null);
 
   return (
     <>
-      {/* DESKTOP CANVAS */}
+      {/* DESKTOP */}
       <div
         ref={canvasRef}
-        className="hidden md:block relative w-full h-[3000px] bg-transparent"
+        className="hidden md:block relative w-full h-[3000px]"
       >
         {items.map((item) => (
           <ArchiveItemCard
@@ -34,22 +40,61 @@ export default function ArchiveCanvas({ items }: { items: ArchiveItem[] }) {
           />
         ))}
 
-        {/* BOTTOM INFO BANNER */}
+        {/* INFO PANEL */}
         <div
-          className={`
-    fixed bottom-0 left-0 w-full
-    border-t border-black
-    bg-white/90 backdrop-blur-md
-    transition-transform duration-300
-    z-50
-    ${selected ? "translate-y-0" : "translate-y-full"}
-  `}
+          className={`fixed bottom-0 left-0 w-full border-t border-black bg-white/90 backdrop-blur-md transition-transform duration-300 z-50 ${selected ? "translate-y-0" : "translate-y-full"
+            }`}
         >
           <div className="p-4 space-y-3">
+            <p className="text-sm">{selected?.description}</p>
 
-            <p className="text-sm">
-              {selected?.description}
-            </p>
+            {selected?.tags?.length ? (
+              <div className="flex flex-wrap gap-2">
+                {selected.tags.map((tag) => (
+                  <span
+                    key={tag}
+                    className="text-[10px] uppercase tracking-wide opacity-50"
+                  >
+                    #{tag}
+                  </span>
+                ))}
+              </div>
+            ) : null}
+          </div>
+        </div>
+      </div>
+
+      {/* MOBILE */}
+      <div className="block md:hidden px-4 py-8 space-y-[-40px]">
+        {items.map((item, index) => (
+          <button
+            key={item._id}
+            onClick={() => setSelected(item)}
+            className="relative block w-full bg-white shadow-sm"
+            style={{
+              transform: `rotate(${index % 2 ? 2 : -2}deg)`,
+              zIndex: index,
+            }}
+          >
+            {item.image && (
+              <Image
+                src={urlFor(item.image).url()}
+                alt={item.title ?? "Archive item"}
+                width={1000}
+                height={1000}
+                className="w-full h-auto"
+              />
+            )}
+          </button>
+        ))}
+
+        {/* MOBILE PANEL */}
+        <div
+          className={`fixed bottom-0 left-0 w-full border-t border-black bg-white/90 backdrop-blur-md transition-transform duration-300 z-50 ${selected ? "translate-y-0" : "translate-y-full"
+            }`}
+        >
+          <div className="p-4 space-y-3">
+            <p className="text-sm">{selected?.description}</p>
 
             {selected?.tags?.length ? (
               <div className="flex flex-wrap gap-2">
@@ -64,85 +109,22 @@ export default function ArchiveCanvas({ items }: { items: ArchiveItem[] }) {
               </div>
             ) : null}
 
-          </div>
-        </div>
-      </div>
-      {selected?.tags && (
-        <div className="flex flex-wrap gap-2 mt-3">
-
-          {selected.tags?.map((tag) => (
-
-            <span
-              key={tag}
-              className="
-          text-[10px]
-          uppercase
-          tracking-wide
-          opacity-50
-        "
+            <button
+              onClick={() => setSelected(null)}
+              className="text-xs uppercase opacity-60 mt-4"
             >
-              #{tag}
-            </span>
-          ))}
-        </div>
-      )}
-
-      {/* MOBILE STACK */}
-      <div className="block md:hidden px-4 py-8 space-y-[-40px]">
-        {items.map((item, index) => (
-          <button
-            key={item._id}
-            onClick={() => setSelected(item)}
-            className="relative block w-full bg-white shadow-sm transition-transform duration-300"
-            style={{
-              transform: `rotate(${index % 2 === 0 ? -2 : 2}deg) translateX(${index % 2 === 0 ? "-8px" : "8px"})`,
-              zIndex: index,
-            }}
-          >
-            {item.image && (
-              <Image
-                src={urlFor(item.image).url()}
-                alt={item.title ?? "Archive item"}
-                width={1000}
-                height={1000}
-                className="w-full h-auto object-cover"
-              />
-            )}
-          </button>
-        ))}
-
-        {/* MOBILE INFO PANEL */}
-        <div className="p-4 space-y-3">
-
-          <p className="text-sm">
-            {selected?.description}
-          </p>
-
-          {selected?.tags?.length ? (
-            <div className="flex flex-wrap gap-2">
-              {selected.tags.map((tag) => (
-                <span
-                  key={tag}
-                  className="text-[10px] uppercase tracking-wide opacity-50"
-                >
-                  #{tag}
-                </span>
-              ))}
-            </div>
-          ) : null}
-
-          <button
-            onClick={() => setSelected(null)}
-            className="mt-4 text-xs uppercase tracking-wide opacity-60"
-          >
-            Close
-          </button>
-
+              Close
+            </button>
+          </div>
         </div>
       </div>
     </>
   );
 }
+
+// =====================================================
+// ITEM CARD
+// =====================================================
 
 function ArchiveItemCard({
   item,
@@ -158,24 +140,26 @@ function ArchiveItemCard({
   selected: ArchiveItem | null;
   setSelected: (item: ArchiveItem | null) => void;
   positions: Record<string, { x: number; y: number }>;
-  setPositions: React.Dispatch<React.SetStateAction<Record<string, { x: number; y: number }>>>;
+  setPositions: React.Dispatch<
+    React.SetStateAction<Record<string, { x: number; y: number }>>
+  >;
   highestZ: number;
   setHighestZ: React.Dispatch<React.SetStateAction<number>>;
   canvasRef: React.RefObject<HTMLDivElement | null>;
 }) {
-  const savedPosition = positions[item._id] || { x: item.x || 0, y: item.y || 0 };
-  const x = useMotionValue(savedPosition.x);
-  const y = useMotionValue(savedPosition.y);
+  const saved = positions[item._id] || { x: item.x || 0, y: item.y || 0 };
+
+  const x = useMotionValue(saved.x);
+  const y = useMotionValue(saved.y);
 
   return (
     <motion.div
       drag
       dragMomentum={false}
       dragConstraints={canvasRef}
-      whileTap={{ cursor: "grabbing" }}
       onMouseDown={() => {
         setSelected(item);
-        setHighestZ((prev) => prev + 1);
+        setHighestZ((p: number) => p + 1);
       }}
       onDragEnd={() => {
         setPositions((prev) => ({
@@ -198,8 +182,7 @@ function ArchiveItemCard({
           alt={item.title ?? "Archive item"}
           width={1000}
           height={1000}
-          draggable={false}
-          className="w-full h-auto object-cover pointer-events-none"
+          className="w-full h-auto pointer-events-none"
         />
       )}
     </motion.div>
