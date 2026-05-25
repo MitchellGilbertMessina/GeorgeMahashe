@@ -1,37 +1,34 @@
 export const revalidate = 60;
 
 import Image from "next/image";
-
 import { getExhibitions } from "@/sanity/sanity-utils";
-
 import RichText from "@/components/RichText";
+import type { PortableTextBlock } from "@portabletext/types";
 
 // =====================================================
 // TYPES
 // =====================================================
 
 type Exhibition = {
-    _id: string;
+  _id: string;
+  title: string;
+  slug: string;
 
-    title: string;
+  venue?: string;
+  address?: string;
 
-    slug: string;
+  startDate: string;
+  endDate: string;
 
-    venue?: string;
-    address?: string;
+  featuredImage?: string;
+  featuredImageCaption?: string;
 
-    startDate: string;
-    endDate: string;
+  description?: PortableTextBlock[];
 
-    featuredImage?: string;
-    featuredImageCaption?: string;
-
-    description?: any[];
-
-    externalLinks?: {
-        label?: string;
-        url: string;
-    }[];
+  externalLinks?: {
+    label?: string;
+    url: string;
+  }[];
 };
 
 // =====================================================
@@ -39,21 +36,19 @@ type Exhibition = {
 // =====================================================
 
 function formatDateRange(start: string, end: string) {
+  const s = new Date(start);
+  const e = new Date(end);
 
-    const s = new Date(start);
-    const e = new Date(end);
+  const opts: Intl.DateTimeFormatOptions = {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  };
 
-    const opts: Intl.DateTimeFormatOptions = {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-    };
-
-    return `
-    ${s.toLocaleDateString("en-ZA", opts)}
-    –
-    ${e.toLocaleDateString("en-ZA", opts)}
-  `;
+  return `${s.toLocaleDateString("en-ZA", opts)} – ${e.toLocaleDateString(
+    "en-ZA",
+    opts
+  )}`;
 }
 
 // =====================================================
@@ -61,167 +56,127 @@ function formatDateRange(start: string, end: string) {
 // =====================================================
 
 export default async function ExhibitionsPage() {
+  const exhibitions: Exhibition[] = await getExhibitions();
 
-    const exhibitions: Exhibition[] =
-        await getExhibitions();
+  const now = new Date();
 
-    const now = new Date();
+  const upcoming = exhibitions.filter(
+    (e) => new Date(e.startDate) > now
+  );
 
-    // ===================================================
-    // GROUP EXHIBITIONS
-    // ===================================================
+  const current = exhibitions.filter(
+    (e) =>
+      new Date(e.startDate) <= now &&
+      new Date(e.endDate) >= now
+  );
 
-    const upcoming = exhibitions.filter(
-        (e) => new Date(e.startDate) > now
-    );
+  const past = exhibitions.filter(
+    (e) => new Date(e.endDate) < now
+  );
 
-    const current = exhibitions.filter(
-        (e) =>
-            new Date(e.startDate) <= now &&
-            new Date(e.endDate) >= now
-    );
+  return (
+    <main className="max-w-4xl mx-auto px-6 py-16 space-y-24">
 
-    const past = exhibitions.filter(
-        (e) => new Date(e.endDate) < now
-    );
+      {/* ================================================= */}
+      {/* CURRENT */}
+      {/* ================================================= */}
 
-    // ===================================================
-    // RENDER
-    // ===================================================
+      {current.length > 0 && (
+        <section>
+          <h2 className="font-metana text-xs uppercase tracking-widest opacity-50 mb-10">
+            Current
+          </h2>
 
-    return (
+          <div className="space-y-24">
+            {current.map((exhibition) => (
+              <FeaturedExhibitionCard
+                key={exhibition._id}
+                exhibition={exhibition}
+              />
+            ))}
+          </div>
+        </section>
+      )}
 
-        <main
-            className="
-        max-w-4xl
-        mx-auto
-        px-6
-        py-16
-        space-y-24
-      "
-        >
+      {/* ================================================= */}
+      {/* UPCOMING */}
+      {/* ================================================= */}
 
-            {/* ============================================ */}
-            {/* CURRENT */}
-            {/* ============================================ */}
+      {upcoming.length > 0 && (
+        <section>
+          <h2 className="font-metana text-xs uppercase tracking-widest opacity-50 mb-10">
+            Upcoming
+          </h2>
 
-            {current.length > 0 && (
+          <div className="space-y-24">
+            {upcoming.map((exhibition) => (
+              <FeaturedExhibitionCard
+                key={exhibition._id}
+                exhibition={exhibition}
+              />
+            ))}
+          </div>
+        </section>
+      )}
 
-                <section>
+      {/* ================================================= */}
+      {/* PAST */}
+      {/* ================================================= */}
 
-                    <h2
-                        className="
-              font-metana
-              text-xs
-              uppercase
-              tracking-widest
-              opacity-50
-              mb-10
-            "
-                    >
-                        Current
-                    </h2>
+      {past.length > 0 && (
+        <section>
+          <h2 className="font-metana text-xs uppercase tracking-widest opacity-50 mb-10">
+            Past
+          </h2>
 
-                    <div className="space-y-24">
+          <div className="space-y-8">
+            {past.map((exhibition) => (
+              <PastExhibitionCard
+                key={exhibition._id}
+                exhibition={exhibition}
+              />
+            ))}
+          </div>
+        </section>
+      )}
 
-                        {current.map((exhibition) => (
+      {/* ================================================= */}
+      {/* EMPTY */}
+      {/* ================================================= */}
 
-                            <FeaturedExhibitionCard
-                                key={exhibition._id}
-                                exhibition={exhibition}
-                            />
-                        ))}
+      {exhibitions.length === 0 && (
+        <p className="opacity-40 text-sm">
+          No exhibitions yet.
+        </p>
+      )}
+    </main>
+  );
+}
 
-                    </div>
+// =====================================================
+// META (REUSABLE)
+// =====================================================
 
-                </section>
-            )}
+function ExhibitionMeta({ exhibition }: { exhibition: Exhibition }) {
+  return (
+    <>
+      <div className="text-sm opacity-50">
+        {formatDateRange(
+          exhibition.startDate,
+          exhibition.endDate
+        )}
+      </div>
 
-            {/* ============================================ */}
-            {/* UPCOMING */}
-            {/* ============================================ */}
-
-            {upcoming.length > 0 && (
-
-                <section>
-
-                    <h2
-                        className="
-              font-metana
-              text-xs
-              uppercase
-              tracking-widest
-              opacity-50
-              mb-10
-            "
-                    >
-                        Upcoming
-                    </h2>
-
-                    <div className="space-y-24">
-
-                        {upcoming.map((exhibition) => (
-
-                            <FeaturedExhibitionCard
-                                key={exhibition._id}
-                                exhibition={exhibition}
-                            />
-                        ))}
-
-                    </div>
-
-                </section>
-            )}
-
-            {/* ============================================ */}
-            {/* PAST */}
-            {/* ============================================ */}
-
-            {past.length > 0 && (
-
-                <section>
-
-                    <h2
-                        className="
-              font-metana
-              text-xs
-              uppercase
-              tracking-widest
-              opacity-50
-              mb-10
-            "
-                    >
-                        Past
-                    </h2>
-
-                    <div className="space-y-8">
-
-                        {past.map((exhibition) => (
-
-                            <PastExhibitionCard
-                                key={exhibition._id}
-                                exhibition={exhibition}
-                            />
-                        ))}
-
-                    </div>
-
-                </section>
-            )}
-
-            {/* ============================================ */}
-            {/* EMPTY */}
-            {/* ============================================ */}
-
-            {exhibitions.length === 0 && (
-
-                <p className="opacity-40 text-sm">
-                    No exhibitions yet.
-                </p>
-            )}
-
-        </main>
-    );
+      {exhibition.venue && (
+        <div className="text-sm opacity-60">
+          {exhibition.venue}
+          {exhibition.address
+            ? `, ${exhibition.address}`
+            : ""}
+        </div>
+      )}
+    </>
+  );
 }
 
 // =====================================================
@@ -229,130 +184,64 @@ export default async function ExhibitionsPage() {
 // =====================================================
 
 function FeaturedExhibitionCard({
-    exhibition,
+  exhibition,
 }: {
-    exhibition: Exhibition;
+  exhibition: Exhibition;
 }) {
+  return (
+    <article className="space-y-6">
 
-    return (
+      {/* TITLE */}
+      <div className="space-y-2">
+        <h3 className="font-metana text-3xl">
+          {exhibition.title}
+        </h3>
 
-        <article className="space-y-6">
+        <ExhibitionMeta exhibition={exhibition} />
+      </div>
 
-            {/* ========================================== */}
-            {/* HEADER */}
-            {/* ========================================== */}
+      {/* IMAGE */}
+      {exhibition.featuredImage && (
+        <div className="space-y-2">
+          <Image
+            src={exhibition.featuredImage}
+            alt={exhibition.title}
+            width={1500}
+            height={1500}
+            className="w-full h-auto"
+          />
 
-            <div className="space-y-2">
+          {exhibition.featuredImageCaption && (
+            <p className="text-xs opacity-40">
+              {exhibition.featuredImageCaption}
+            </p>
+          )}
+        </div>
+      )}
 
-                <h3 className="font-metana text-3xl">
-                    {exhibition.title}
-                </h3>
+      {/* DESCRIPTION */}
+      {exhibition.description && (
+        <RichText value={exhibition.description} />
+      )}
 
-                <div className="text-sm opacity-50">
-
-                    {formatDateRange(
-                        exhibition.startDate,
-                        exhibition.endDate
-                    )}
-
-                </div>
-
-                {exhibition.venue && (
-
-                    <div className="text-sm opacity-60">
-
-                        {exhibition.venue}
-
-                        {exhibition.address
-                            ? `, ${exhibition.address}`
-                            : ""}
-
-                    </div>
-                )}
-
-            </div>
-
-            {/* ========================================== */}
-            {/* IMAGE */}
-            {/* ========================================== */}
-
-            {exhibition.featuredImage && (
-
-                <div className="space-y-2">
-
-                    <div className="relative w-full">
-
-                        <Image
-                            src={exhibition.featuredImage}
-                            alt={exhibition.title}
-                            width={1500}
-                            height={1500}
-                            className="
-          w-full
-          h-auto
-        "
-                        />
-
-                    </div>
-
-                    {exhibition.featuredImageCaption && (
-
-                        <p className="text-xs opacity-40">
-
-                            {exhibition.featuredImageCaption}
-
-                        </p>
-                    )}
-
-                </div>
-            )}
-
-            {/* ========================================== */}
-            {/* DESCRIPTION */}
-            {/* ========================================== */}
-
-            {exhibition.description && (
-
-                <RichText value={exhibition.description} />
-
-            )}
-
-            {/* ========================================== */}
-            {/* EXTERNAL LINKS */}
-            {/* ========================================== */}
-
-            {exhibition.externalLinks &&
-                exhibition.externalLinks.length > 0 && (
-
-                    <div className="flex flex-wrap gap-4 pt-2">
-
-                        {exhibition.externalLinks.map(
-                            (link, index) => (
-
-                                <a
-                                    key={index}
-                                    href={link.url}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="
-                  text-xs
-                  uppercase
-                  tracking-wide
-                  opacity-40
-                  hover:opacity-80
-                  transition
-                "
-                                >
-                                    {link.label || "More Info"} ↗
-                                </a>
-                            )
-                        )}
-
-                    </div>
-                )}
-
-        </article>
-    );
+      {/* LINKS */}
+      {exhibition.externalLinks?.length ? (
+        <div className="flex flex-wrap gap-4 pt-2">
+          {exhibition.externalLinks.map((link, index) => (
+            <a
+              key={index}
+              href={link.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs uppercase tracking-wide opacity-40 hover:opacity-80 transition"
+            >
+              {link.label || "More Info"} ↗
+            </a>
+          ))}
+        </div>
+      ) : null}
+    </article>
+  );
 }
 
 // =====================================================
@@ -360,72 +249,32 @@ function FeaturedExhibitionCard({
 // =====================================================
 
 function PastExhibitionCard({
-    exhibition,
+  exhibition,
 }: {
-    exhibition: Exhibition;
+  exhibition: Exhibition;
 }) {
+  return (
+    <article className="border-t border-gray-200 pt-6">
 
-    return (
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2">
 
-        <article
-            className="
-        border-t
-        border-gray-200
-        pt-6
-      "
-        >
+        <div>
+          <h3 className="font-metana text-xl">
+            {exhibition.title}
+          </h3>
 
-            <div
-                className="
-          flex
-          flex-col
-          sm:flex-row
-          sm:justify-between
-          sm:items-start
-          gap-2
-        "
-            >
+          <ExhibitionMeta exhibition={exhibition} />
+        </div>
 
-                <div>
+        <span className="text-sm opacity-50 shrink-0">
+          {formatDateRange(
+            exhibition.startDate,
+            exhibition.endDate
+          )}
+        </span>
 
-                    <h3 className="font-metana text-xl">
+      </div>
 
-                        {exhibition.title}
-
-                    </h3>
-
-                    {exhibition.venue && (
-
-                        <p className="text-sm opacity-60 mt-1">
-
-                            {exhibition.venue}
-
-                            {exhibition.address
-                                ? `, ${exhibition.address}`
-                                : ""}
-
-                        </p>
-                    )}
-
-                </div>
-
-                <span
-                    className="
-            text-sm
-            opacity-50
-            shrink-0
-          "
-                >
-
-                    {formatDateRange(
-                        exhibition.startDate,
-                        exhibition.endDate
-                    )}
-
-                </span>
-
-            </div>
-
-        </article>
-    );
+    </article>
+  );
 }
