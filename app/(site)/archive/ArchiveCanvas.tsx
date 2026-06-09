@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useState as useReactState } from "react";
 import { motion, useMotionValue } from "framer-motion";
 import Image from "next/image";
 import { urlFor } from "@/sanity/lib/image";
@@ -42,8 +42,9 @@ export default function ArchiveCanvas({
 
         {/* INFO PANEL */}
         <div
-          className={`fixed bottom-0 left-0 w-full border-t border-black bg-white/90 backdrop-blur-md transition-transform duration-300 z-50 ${selected ? "translate-y-0" : "translate-y-full"
-            }`}
+          className={`fixed bottom-0 left-0 w-full border-t border-black bg-white/90 backdrop-blur-md transition-transform duration-300 z-50 ${
+            selected ? "translate-y-0" : "translate-y-full"
+          }`}
         >
           <div className="p-4 space-y-3">
             <p className="text-sm">{selected?.description}</p>
@@ -90,8 +91,9 @@ export default function ArchiveCanvas({
 
         {/* MOBILE PANEL */}
         <div
-          className={`fixed bottom-0 left-0 w-full border-t border-black bg-white/90 backdrop-blur-md transition-transform duration-300 z-50 ${selected ? "translate-y-0" : "translate-y-full"
-            }`}
+          className={`fixed bottom-0 left-0 w-full border-t border-black bg-white/90 backdrop-blur-md transition-transform duration-300 z-50 ${
+            selected ? "translate-y-0" : "translate-y-full"
+          }`}
         >
           <div className="p-4 space-y-3">
             <p className="text-sm">{selected?.description}</p>
@@ -123,7 +125,7 @@ export default function ArchiveCanvas({
 }
 
 // =====================================================
-// ITEM CARD
+// CORRECTED ITEM CARD
 // =====================================================
 
 function ArchiveItemCard({
@@ -147,10 +149,16 @@ function ArchiveItemCard({
   setHighestZ: React.Dispatch<React.SetStateAction<number>>;
   canvasRef: React.RefObject<HTMLDivElement | null>;
 }) {
-  const saved = positions[item._id] || { x: item.x || 0, y: item.y || 0 };
+  const currentPos = positions[item._id] || { x: item.x || 0, y: item.y || 0 };
+  const [debugPos, setDebugPos] = useReactState({ x: currentPos.x, y: currentPos.y });
 
-  const x = useMotionValue(saved.x);
-  const y = useMotionValue(saved.y);
+  // ----------------------------------------------------
+  // DEBUG TOGGLE SWITCH
+  // Toggle these lines to turn the overlay on/off globally
+  // ----------------------------------------------------
+  const showDebugOverlay = true;  // <-- SHOW overlay
+  // const showDebugOverlay = false; // <-- HIDE overlay
+  // ----------------------------------------------------
 
   return (
     <motion.div
@@ -159,23 +167,36 @@ function ArchiveItemCard({
       dragConstraints={canvasRef}
       onMouseDown={() => {
         setSelected(item);
-        setHighestZ((p: number) => p + 1);
+        setHighestZ((p) => p + 1);
       }}
-      onDragEnd={() => {
+      onDrag={(event, info) => {
+        setDebugPos({
+          x: currentPos.x + info.offset.x,
+          y: currentPos.y + info.offset.y,
+        });
+      }}
+      onDragEnd={(event, info) => {
         setPositions((prev) => ({
           ...prev,
-          [item._id]: { x: x.get(), y: y.get() },
+          [item._id]: { 
+            x: currentPos.x + info.offset.x, 
+            y: currentPos.y + info.offset.y 
+          },
         }));
       }}
       className="absolute cursor-grab"
+      animate={{
+        x: currentPos.x,
+        y: currentPos.y,
+      }}
+      transition={{ type: "spring", stiffness: 300, damping: 30, duration: 0 }}
       style={{
-        x,
-        y,
         width: item.width || 300,
         rotate: `${item.rotation || 0}deg`,
         zIndex: selected?._id === item._id ? highestZ : 1,
       }}
     >
+      {/* IMAGE */}
       {item.image && (
         <Image
           src={urlFor(item.image).url()}
@@ -184,6 +205,16 @@ function ArchiveItemCard({
           height={1000}
           className="w-full h-auto pointer-events-none"
         />
+      )}
+
+      {/* =========================
+          DEBUG OVERLAY
+      ========================= */}
+      {showDebugOverlay && selected?._id === item._id && (
+        <div className="absolute top-0 left-0 bg-black text-white text-[10px] px-2 py-1 opacity-70 pointer-events-none z-50">
+          x: {Math.round(debugPos.x)} <br />
+          y: {Math.round(debugPos.y)}
+        </div>
       )}
     </motion.div>
   );
