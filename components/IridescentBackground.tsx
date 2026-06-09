@@ -7,7 +7,6 @@ import {
   useAnimationFrame,
   useTransform,
 } from "framer-motion";
-
 import { useEffect } from "react";
 
 export default function IridescentBackground({
@@ -23,7 +22,9 @@ export default function IridescentBackground({
 
   const angle = useMotionValue(0);
   const smoothAngle = useSpring(angle, { stiffness: 35, damping: 25 });
-  const angleDeg = useTransform(smoothAngle, (a) => (a * 180) / Math.PI);
+  
+  // Reverses the rotation relative to the mouse vector
+  const angleDeg = useTransform(smoothAngle, (a) => -(a * 180) / Math.PI); 
 
   const drift = useMotionValue(0);
   const driftSpring = useSpring(drift, { stiffness: 18, damping: 28 });
@@ -32,8 +33,8 @@ export default function IridescentBackground({
     const handleMove = (e: MouseEvent) => {
       const x = e.clientX / window.innerWidth - 0.5;
       const y = e.clientY / window.innerHeight - 0.5;
-      mouseX.set(x * 220);
-      mouseY.set(y * 220);
+      mouseX.set(x * 300); 
+      mouseY.set(y * 300);
       angle.set(Math.atan2(y, x));
     };
     window.addEventListener("mousemove", handleMove);
@@ -41,8 +42,17 @@ export default function IridescentBackground({
   }, [mouseX, mouseY, angle]);
 
   useAnimationFrame((t) => {
-    drift.set(Math.sin(t / 7000) * 35);
+    drift.set(Math.sin(t / 4000) * 55); 
   });
+
+  const iridescentStops = `
+    rgba(255, 140, 190, 1) 0%,    
+    rgba(200, 150, 255, 0.95) 22%, 
+    rgba(100, 230, 255, 0.95) 45%, 
+    rgba(255, 235, 140, 1) 68%,    
+    rgba(255, 160, 140, 0.95) 85%, 
+    rgba(255, 140, 190, 1) 100%   
+  `;
 
   return (
     <div
@@ -51,32 +61,27 @@ export default function IridescentBackground({
         fixed inset-0
         -z-50
         pointer-events-none
-        bg-[#f8f6f1]
+        bg-[#fbfaf7]
+        overflow-hidden
       "
     >
       <style>{`
         @keyframes iridescent-spin {
-          from { --conic-angle: 180deg; }
-          to   { --conic-angle: 540deg; }
+          from { --conic-angle: 0deg; }
+          to   { --conic-angle: -360deg; }
         }
         @property --conic-angle {
           syntax: '<angle>';
           inherits: false;
-          initial-value: 180deg;
+          initial-value: 0deg;
         }
         .mobile-iridescent {
-          animation: iridescent-spin 24s linear infinite;
+          animation: iridescent-spin 16s linear infinite;
           background: conic-gradient(
-            from var(--conic-angle) at 60% 40%,
-            rgba(255, 245, 210, 1),
-            rgba(255, 200, 225, 0.95),
-            rgba(225, 210, 255, 0.92),
-            rgba(210, 235, 255, 0.93),
-            rgba(255, 235, 200, 1),
-            rgba(255, 220, 240, 0.95),
-            rgba(255, 245, 210, 1)
+            from var(--conic-angle) at 50% 50%,
+            ${iridescentStops}
           );
-          filter: blur(80px);
+          filter: blur(60px);
         }
       `}</style>
 
@@ -98,67 +103,67 @@ export default function IridescentBackground({
           rotate: driftSpring,
           opacity: opacity,
         }}
-        className="hidden md:block absolute inset-[-25%]"
+        className="hidden md:block absolute inset-[-40%]"
       >
         <motion.div
           style={{ rotate: angleDeg }}
-          className="w-full h-full blur-[80px]"
+          className="w-full h-full blur-[70px]"
         >
           <div
             className="w-full h-full"
             style={{
-              background: `
-                conic-gradient(
-                  from 180deg at 50% 50%,
-                  rgba(255, 245, 210, 1),
-                  rgba(255, 200, 225, 0.95),
-                  rgba(225, 210, 255, 0.92),
-                  rgba(210, 235, 255, 0.93),
-                  rgba(255, 235, 200, 1),
-                  rgba(255, 220, 240, 0.95),
-                  rgba(255, 245, 210, 1)
-                )
-              `,
+              background: `conic-gradient(from 0deg at 50% 50%, ${iridescentStops})`,
             }}
           />
         </motion.div>
       </motion.div>
 
       {/* ========================= */}
-      {/* SECONDARY LAYER           */}
+      {/* SECONDARY BACKLIGHT LAYER */}
       {/* ========================= */}
       <motion.div
         style={{
-          x: smoothX,
-          y: smoothY,
-          rotate: driftSpring,
-          opacity: opacity * 1.45,
+          x: useTransform(smoothX, (v) => -v * 0.4), 
+          y: useTransform(smoothY, (v) => -v * 0.4),
+          rotate: useTransform(driftSpring, (v) => -v * 0.5),
+          opacity: opacity * 0.8,
         }}
-        className="hidden md:block absolute inset-[-35%] mix-blend-multiply"
+        className="hidden md:block absolute inset-[-40%] mix-blend-multiply"
       >
         <div
-          className="w-full h-full blur-[140px]"
+          className="w-full h-full blur-[100px]"
           style={{
             background: `
               radial-gradient(
-                circle at 30% 30%,
-                rgba(255, 210, 160, 0.75),
-                transparent 45%
+                circle at 25% 25%,
+                rgba(255, 120, 180, 0.5),
+                transparent 55%
               ),
               radial-gradient(
-                circle at 70% 60%,
-                rgba(230, 200, 255, 0.65),
-                transparent 50%
+                circle at 75% 35%,
+                rgba(70, 210, 255, 0.5),
+                transparent 55%
               ),
               radial-gradient(
-                circle at 50% 80%,
-                rgba(200, 225, 255, 0.45),
-                transparent 45%
+                circle at 50% 75%,
+                rgba(255, 220, 100, 0.4),
+                transparent 55%
               )
             `,
           }}
         />
       </motion.div>
+
+  {/* ========================================================== */}
+{/* AMPLIFIED NOISE OVERLAY LAYER                              */}
+{/* Increased opacity to 0.08 (8%) for a distinct texture      */}
+{/* ========================================================== */}
+<div 
+  className="absolute inset-0 opacity-[0.08] mix-blend-overlay pointer-events-none z-50" 
+  style={{ 
+    backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.95' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")` 
+  }} 
+/>
     </div>
   );
 }
