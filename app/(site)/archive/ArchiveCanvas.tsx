@@ -123,7 +123,6 @@ export default function ArchiveCanvas({
     </>
   );
 }
-
 // =====================================================
 // CORRECTED ITEM CARD
 // =====================================================
@@ -153,11 +152,11 @@ function ArchiveItemCard({
   const [debugPos, setDebugPos] = useReactState({ x: currentPos.x, y: currentPos.y });
 
   // ----------------------------------------------------
-  // DEBUG TOGGLE SWITCH
-  // Toggle these lines to turn the overlay on/off globally
+  // MANUAL DEBUG SWITCH
+  // Switch the comment tags below before pushing live!
   // ----------------------------------------------------
-  const showDebugOverlay = true;  // <-- SHOW overlay
-  // const showDebugOverlay = false; // <-- HIDE overlay
+  // const showDebugOverlay = true;  // <-- Uncomment this to see coordinates locally
+  const showDebugOverlay = false; // <-- Keep this active when pushing to production
   // ----------------------------------------------------
 
   return (
