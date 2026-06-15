@@ -335,6 +335,38 @@ date,
   );
 }
 
+export async function getHomepageItems() {
+  return await client.fetch(
+    groq`
+      *[_type == "homepageItem"]
+      | order(_createdAt desc) {
+        _id,
+        title,
+        description,
+        mediaType,
+        image,
+        "imageCaption": image.caption,
+        "videoUrl": video.asset->url,
+        "audioUrl": audio.asset->url,
+        "pdfUrl": pdf.asset->url,
+        tags,
+        featured,
+        date,
+        x,
+        y,
+        width,
+        rotation
+      }
+    `,
+    {},
+    {
+      next: {
+        revalidate: 60,
+      },
+    }
+  );
+}
+
 // =====================================================
 // EXHIBITIONS
 // =====================================================

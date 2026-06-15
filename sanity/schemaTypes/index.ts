@@ -2,8 +2,8 @@ import project from '../schemas/project-schema';
 import about from '../schemas/about-schema';
 import siteSettings from "../schemas/siteSettings";
 import archiveItem from "../schemas/archiveItem";
+import homepageItem from "../schemas/homepageItem";
 import { exhibitionSchema } from "../schemas/exhibition-schema";
-
 
 import textBlock from "../schemas/objects/textBlock";
 import headingBlock from "../schemas/objects/headingBlock";
@@ -16,6 +16,7 @@ export const schemaTypes = [
   about,
   siteSettings,
   archiveItem,
+  homepageItem,
   exhibitionSchema,
 
   textBlock,

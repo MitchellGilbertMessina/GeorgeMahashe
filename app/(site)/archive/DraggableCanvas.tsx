@@ -6,7 +6,7 @@ import Image from "next/image";
 import { urlFor } from "@/sanity/lib/image";
 import type { ArchiveItem } from "@/types/project";
 
-export default function ArchiveCanvas({
+export default function DraggableCanvas({
   items,
 }: {
   items: ArchiveItem[];
@@ -155,7 +155,7 @@ function ArchiveItemCard({
   // MANUAL DEBUG SWITCH
   // Switch the comment tags below before pushing live!
   // ----------------------------------------------------
-  // const showDebugOverlay = true;  // <-- Uncomment this to see coordinates locally
+  //const showDebugOverlay = true;  // <-- Uncomment this to see coordinates locally
   const showDebugOverlay = false; // <-- Keep this active when pushing to production
   // ----------------------------------------------------
 

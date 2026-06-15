@@ -38,10 +38,9 @@ export default function Header() {
           <Link href="/about" className="hover:opacity-60 transition">
             About
           </Link>
-          
-          {/*<Link href="/archive" className="hover:opacity-60 transition">
+          <Link href="/archive" className="hover:opacity-60 transition">
             Archive
-          </Link>*/}
+          </Link>
         </nav>
 
       </div>
