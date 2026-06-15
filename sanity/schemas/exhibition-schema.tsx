@@ -128,7 +128,32 @@ export const exhibitionSchema = defineType({
             ],
         }),
 
-    
+        // =====================================================
+        // INSTALLATION IMAGES
+        // =====================================================
+
+        defineField({
+            name: "galleryImages",
+            title: "Installation Images",
+            type: "array",
+
+            of: [
+                {
+                    type: "image",
+                    options: {
+                        hotspot: true,
+                    },
+
+                    fields: [
+                        defineField({
+                            name: "caption",
+                            title: "Caption",
+                            type: "string",
+                        }),
+                    ],
+                },
+            ],
+        }),
 
         // =====================================================
         // RELATED PROJECTS

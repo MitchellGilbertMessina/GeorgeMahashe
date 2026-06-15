@@ -1,4 +1,5 @@
 import { Project } from "@/types/project";
+import type { Exhibition } from "@/types/exhibition";
 import { client } from "./lib/client";
 import { groq } from "next-sanity";
 
@@ -39,12 +40,12 @@ export async function getProjects(): Promise<Project[]> {
           rotation,
         }
       `,
-    {},
-    {
-      next: {
-        revalidate: 60,
-      },
-    }
+      {},
+      {
+        next: {
+          revalidate: 60,
+        },
+      }
     );
 
     return projects ?? [];
@@ -201,13 +202,13 @@ export async function getProject(
           }
         }
       `,
-      
+
       { slug },
-    {
-      next: {
-        revalidate: 60,
-      },
-    }
+      {
+        next: {
+          revalidate: 60,
+        },
+      }
     );
 
     return project ?? null;
@@ -371,7 +372,7 @@ export async function getHomepageItems() {
 // EXHIBITIONS
 // =====================================================
 
-export async function getExhibitions() {
+export async function getExhibitions(): Promise<Exhibition[]> {
 
   try {
 
@@ -396,9 +397,14 @@ export async function getExhibitions() {
 
           "featuredImage": featuredImage.asset->url,
 
-          "featuredImageCaption": featuredImage.caption,
+"featuredImageCaption": featuredImage.caption,
 
-          description,
+description,
+
+"galleryImages": galleryImages[]{
+  "url": asset->url,
+  caption
+},
 
           externalLinks[] {
             label,
@@ -440,7 +446,7 @@ export async function getExhibitions() {
 // SINGLE EXHIBITION
 // =====================================================
 
-export async function getExhibition(slug: string) {
+export async function getExhibition(slug: string): Promise<Exhibition | null> {
 
   try {
 

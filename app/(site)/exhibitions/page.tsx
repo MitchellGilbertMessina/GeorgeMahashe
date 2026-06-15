@@ -2,8 +2,8 @@ export const revalidate = 60;
 
 import Image from "next/image";
 import { getExhibitions } from "@/sanity/sanity-utils";
-import RichText from "@/components/RichText";
 import type { PortableTextBlock } from "@portabletext/types";
+import Link from "next/link";
 
 // =====================================================
 // TYPES
@@ -157,56 +157,46 @@ function ExhibitionMeta({ exhibition }: { exhibition: Exhibition }) {
 // =====================================================
 // FEATURED
 // =====================================================
-
 function FeaturedExhibitionCard({
   exhibition,
 }: {
   exhibition: Exhibition;
 }) {
   return (
-    <article className="space-y-6">
+    <article className="space-y-4">
+
+      {/* TITLE + META */}
       <div className="space-y-2">
-        <h3 className="font-metana text-3xl">{exhibition.title}</h3>
+        <h3 className="font-metana text-3xl">
+          {exhibition.title}
+        </h3>
+
         <ExhibitionMeta exhibition={exhibition} />
       </div>
 
+      {/* IMAGE (still allowed, but lighter role now) */}
       {exhibition.featuredImage && (
         <div className="space-y-2">
           <Image
             src={exhibition.featuredImage}
             alt={exhibition.title}
-            width={1500}
-            height={1500}
+            width={1200}
+            height={800}
             className="w-full h-auto"
           />
-
-          {exhibition.featuredImageCaption && (
-            <p className="text-xs opacity-40">
-              {exhibition.featuredImageCaption}
-            </p>
-          )}
         </div>
       )}
 
-      {exhibition.description && (
-        <RichText value={exhibition.description} />
-      )}
+      {/* LINK TO FULL PAGE (NEW CRITICAL PIECE) */}
+      <div>
+        <Link
+          href={`/exhibitions/${exhibition.slug}`}
+          className="text-xs uppercase tracking-widest opacity-50 hover:opacity-100 transition"
+        >
+          View Exhibition →
+        </Link>
+      </div>
 
-      {exhibition.externalLinks?.length ? (
-        <div className="flex flex-wrap gap-4 pt-2">
-          {exhibition.externalLinks.map((link, index) => (
-            <a
-              key={index}
-              href={link.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-xs uppercase tracking-wide opacity-40 hover:opacity-80 transition"
-            >
-              {link.label || "More Info"} ↗
-            </a>
-          ))}
-        </div>
-      ) : null}
     </article>
   );
 }
@@ -222,15 +212,36 @@ function PastExhibitionCard({
 }) {
   return (
     <article className="border-t border-gray-200 pt-6">
-      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2">
-        <div>
-          <h3 className="font-metana text-xl">{exhibition.title}</h3>
+
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4">
+
+        {/* LEFT SIDE */}
+        <div className="space-y-2">
+
+          <h3 className="font-metana text-xl">
+            {exhibition.title}
+          </h3>
+
           <ExhibitionMeta exhibition={exhibition} />
+
+          {/* NEW: LINK */}
+          <Link
+            href={`/exhibitions/${exhibition.slug}`}
+            className="text-xs uppercase tracking-widest opacity-50 hover:opacity-100 transition inline-block"
+          >
+            View →
+          </Link>
+
         </div>
 
+        {/* RIGHT SIDE DATE */}
         <span className="text-sm opacity-50 shrink-0">
-          {formatDateRange(exhibition.startDate, exhibition.endDate)}
+          {formatDateRange(
+            exhibition.startDate,
+            exhibition.endDate
+          )}
         </span>
+
       </div>
     </article>
   );
