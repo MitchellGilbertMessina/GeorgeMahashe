@@ -204,7 +204,6 @@ function FeaturedExhibitionCard({
 // =====================================================
 // PAST
 // =====================================================
-
 function PastExhibitionCard({
   exhibition,
 }: {
@@ -224,7 +223,6 @@ function PastExhibitionCard({
 
           <ExhibitionMeta exhibition={exhibition} />
 
-          {/* NEW: LINK */}
           <Link
             href={`/exhibitions/${exhibition.slug}`}
             className="text-xs uppercase tracking-widest opacity-50 hover:opacity-100 transition inline-block"
@@ -234,15 +232,8 @@ function PastExhibitionCard({
 
         </div>
 
-        {/* RIGHT SIDE DATE */}
-        <span className="text-sm opacity-50 shrink-0">
-          {formatDateRange(
-            exhibition.startDate,
-            exhibition.endDate
-          )}
-        </span>
-
       </div>
+
     </article>
   );
 }
