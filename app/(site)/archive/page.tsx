@@ -1,6 +1,6 @@
 export const revalidate = 60;
 
-import { getArchiveItems, getHomepageItems } from "@/sanity/sanity-utils";
+import { getArchiveItems } from "@/sanity/sanity-utils";
 import DraggableCanvas from "./DraggableCanvas";
 
 export default async function ArchivePage() {

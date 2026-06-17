@@ -10,3 +10,7 @@ export async function generateStaticParams() {
     slug: exhibition.slug,
   }));
 }
+
+export default function ExhibitionPage() {
+  return null;
+}

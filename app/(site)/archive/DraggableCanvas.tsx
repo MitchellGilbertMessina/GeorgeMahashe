@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useState as useReactState } from "react";
-import { motion, useMotionValue } from "framer-motion";
+import { motion} from "framer-motion";
 import Image from "next/image";
 import { urlFor } from "@/sanity/lib/image";
 import type { ArchiveItem } from "@/types/project";
