@@ -1,6 +1,12 @@
 "use client";
-
 import { usePathname } from "next/navigation";
+
+const siteId = process.env.NEXT_PUBLIC_SITE_ID ?? "george";
+
+const footerText: Record<string, string> = {
+  george: "© George Mahashe 2026",
+  defunct: "© —defunct context 2026",
+};
 
 export default function Footer() {
   const pathname = usePathname();
@@ -17,7 +23,7 @@ export default function Footer() {
       `}
     >
       <div className="max-w-5xl mx-auto px-6 text-center">
-        © George Mahashe 2026
+        {footerText[siteId] ?? footerText.george}
       </div>
     </footer>
   );

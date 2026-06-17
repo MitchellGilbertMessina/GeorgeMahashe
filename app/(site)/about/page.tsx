@@ -4,7 +4,8 @@ import { getAbout } from "@/sanity/sanity-utils";
 import AboutTabs from "@/./components/about/AboutTabs";
 
 export default async function AboutPage() {
-  const data = await getAbout();
+  const siteId = process.env.NEXT_PUBLIC_SITE_ID ?? "george";
+  const data = await getAbout(siteId);
 
   return (
     <div>

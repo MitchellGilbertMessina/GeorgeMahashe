@@ -7,56 +7,37 @@ import { groq } from "next-sanity";
 // ALL MAIN PROJECTS (PROJECTS PAGE)
 // =====================================================
 
-export async function getProjects(): Promise<Project[]> {
-
+export async function getProjects(siteId: string): Promise<Project[]> {
   try {
-
     const projects = await client.fetch(
-
       groq`
         *[
           _type == "project"
           && !defined(parentProject)
+          && site in [$siteId, "both"]
         ]
         | order(orderRank asc)
         {
-
           _id,
           _createdAt,
-
           title,
-
-          "slug":
-            slug.current,
-
-          "heroImage":
-            heroImage.asset->url,
-
+          "slug": slug.current,
+          "heroImage": heroImage.asset->url,
           shortDescription,
-
+          site,
+          projectType,
           x,
           y,
           width,
           rotation,
         }
       `,
-      {},
-      {
-        next: {
-          revalidate: 60,
-        },
-      }
+      { siteId },
+      { next: { revalidate: 60 } }
     );
-
     return projects ?? [];
-
   } catch (error) {
-
-    console.error(
-      "Failed to fetch projects:",
-      error
-    );
-
+    console.error("Failed to fetch projects:", error);
     return [];
   }
 }
@@ -228,27 +209,18 @@ export async function getProject(
 // ABOUT
 // =====================================================
 
-export async function getAbout() {
-
+export async function getAbout(siteId: string) {
   return await client.fetch(
-
     groq`
-      *[_type == "about"][0]{
-
+      *[_type == "about" && site == $siteId][0]{
         bio,
-
         contactDetails,
-
         exhibitions,
-
         publishedTexts,
-
         otherWebsites[]{
-
           title,
           description,
           url,
-
           image{
             asset->{
               url
@@ -256,7 +228,9 @@ export async function getAbout() {
           }
         }
       }
-    `
+    `,
+    { siteId },
+    { next: { revalidate: 60 } }
   );
 }
 
@@ -284,62 +258,13 @@ export async function getHomepageImages() {
   return data?.homepageImages ?? [];
 }
 
-// =====================================================
+/// =====================================================
 // ARCHIVE ITEMS
 // =====================================================
-
-export async function getArchiveItems() {
-
-  return await client.fetch(
-
-    groq`
-      *[_type == "archiveItem"]
-      | order(_createdAt desc) {
-
-        _id,
-
-        title,
-
-        description,
-
-        mediaType,
-
-image,
-"imageCaption": image.caption,
-
-"videoUrl": video.asset->url,
-
-"audioUrl": audio.asset->url,
-
-"pdfUrl": pdf.asset->url,
-
-tags,
-
-featured,
-
-date,
-
-        x,
-        y,
-
-        width,
-
-        rotation
-      }
-    `,
-    {},
-    {
-      next: {
-        revalidate: 60,
-      },
-    }
-  );
-}
-
-export async function getHomepageItems() {
+export async function getArchiveItems(siteId: string) {
   return await client.fetch(
     groq`
-      *[_type == "homepageItem"]
+      *[_type == "archiveItem" && site in [$siteId, "both"]]
       | order(_createdAt desc) {
         _id,
         title,
@@ -359,27 +284,50 @@ export async function getHomepageItems() {
         rotation
       }
     `,
-    {},
-    {
-      next: {
-        revalidate: 60,
-      },
-    }
+    { siteId },
+    { next: { revalidate: 60 } }
+  );
+}
+
+// =====================================================
+// HOMEPAGE ITEMS
+// =====================================================
+export async function getHomepageItems(siteId: string) {
+  return await client.fetch(
+    groq`
+      *[_type == "homepageItem" && site in [$siteId, "both"]]
+      | order(_createdAt desc) {
+        _id,
+        title,
+        description,
+        mediaType,
+        image,
+        "imageCaption": image.caption,
+        "videoUrl": video.asset->url,
+        "audioUrl": audio.asset->url,
+        "pdfUrl": pdf.asset->url,
+        tags,
+        featured,
+        date,
+        x,
+        y,
+        width,
+        rotation
+      }
+    `,
+    { siteId },
+    { next: { revalidate: 60 } }
   );
 }
 
 // =====================================================
 // EXHIBITIONS
 // =====================================================
-
-export async function getExhibitions(): Promise<Exhibition[]> {
-
+export async function getExhibitions(siteId: string): Promise<Exhibition[]> {
   try {
-
     const exhibitions = await client.fetch(
-
       groq`
-        *[_type == "exhibition"]
+        *[_type == "exhibition" && site in [$siteId, "both"]]
         | order(startDate desc)
         {
           _id,
@@ -421,23 +369,12 @@ description,
           }
         }
       `,
-      {},
-      {
-        next: {
-          revalidate: 60,
-        },
-      }
+      { siteId },
+      { next: { revalidate: 60 } }
     );
-
     return exhibitions ?? [];
-
   } catch (error) {
-
-    console.error(
-      "Failed to fetch exhibitions:",
-      error
-    );
-
+    console.error("Failed to fetch exhibitions:", error);
     return [];
   }
 }

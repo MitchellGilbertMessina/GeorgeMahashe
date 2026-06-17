@@ -56,7 +56,8 @@ function formatDateRange(start: string, end: string) {
 // =====================================================
 
 export default async function ExhibitionsPage() {
-  const exhibitions: Exhibition[] = await getExhibitions();
+  const siteId = process.env.NEXT_PUBLIC_SITE_ID ?? "george";
+  const exhibitions = await getExhibitions(siteId);
 
   const now = new Date();
 

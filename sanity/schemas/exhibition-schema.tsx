@@ -175,6 +175,24 @@ export const exhibitionSchema = defineType({
             ],
         }),
 
+        // =================================================
+        // SITE SETTINGS - GEORGE / DEFUNCT / BOTH
+        // =================================================
+        defineField({
+            name: "site",
+            title: "Site",
+            type: "string",
+            options: {
+                list: [
+                    { title: "George Mahashe", value: "george" },
+                    { title: "Defunct Context", value: "defunct" },
+                    { title: "Both", value: "both" },
+                ],
+                layout: "radio",
+            },
+            initialValue: "george",
+        }),
+
     ],
 
     // =====================================================

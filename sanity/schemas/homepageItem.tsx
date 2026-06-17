@@ -103,6 +103,25 @@ export default defineType({
       type: "number",
       initialValue: 0,
     }),
+
+    // =================================================
+    // SITE SETTINGS - GEORGE / DEFUNCT / BOTH
+    // =================================================
+    defineField({
+      name: "site",
+      title: "Site",
+      type: "string",
+      options: {
+        list: [
+          { title: "George Mahashe", value: "george" },
+          { title: "defunct context", value: "defunct" },
+          { title: "Both", value: "both" },
+        ],
+        layout: "radio",
+      },
+      initialValue: "george",
+    }),
+
   ],
   preview: {
     select: {

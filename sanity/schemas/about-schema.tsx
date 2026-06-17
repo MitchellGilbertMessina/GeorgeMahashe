@@ -1,5 +1,4 @@
 
-
 export default {
   name: 'about',
   title: 'About',
@@ -10,6 +9,23 @@ export default {
       title: 'Title',
       type: 'string',
       initialValue: 'About Content'
+    },
+
+    // =================================================
+    // SITE ASSIGNMENT
+    // =================================================
+    {
+      name: "site",
+      title: "Site",
+      type: "string",
+      options: {
+        list: [
+          { title: "George Mahashe", value: "george" },
+          { title: "Defunct Context", value: "defunct" },
+        ],
+        layout: "radio",
+      },
+      initialValue: "george",
     },
 
     {
