@@ -37,9 +37,9 @@ export default function Header() {
             <span key={line} className="block">{line}</span>
           ))}
         </Link>
-        <nav className="flex gap-6 text-lg sm:text-xl font-metana sm:ml-auto self-start sm:self-auto">
+        <nav className="flex gap-3 sm:gap-6 text-sm sm:text-xl font-metana sm:ml-auto self-start sm:self-auto">
           {config.nav.map(({ label, href }) => (
-            <Link key={href} href={href} className="hover:opacity-60 transition">
+            <Link key={href} href={href} className="hover:opacity-60 transition whitespace-nowrap">
               {label}
             </Link>
           ))}

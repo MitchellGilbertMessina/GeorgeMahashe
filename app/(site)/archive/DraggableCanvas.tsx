@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useState as useReactState } from "react";
-import { motion} from "framer-motion";
+import { motion } from "framer-motion";
 import Image from "next/image";
 import { urlFor } from "@/sanity/lib/image";
 import type { ArchiveItem } from "@/types/project";
@@ -42,9 +42,8 @@ export default function DraggableCanvas({
 
         {/* INFO PANEL */}
         <div
-          className={`fixed bottom-0 left-0 w-full border-t border-black bg-white/90 backdrop-blur-md transition-transform duration-300 z-50 ${
-            selected ? "translate-y-0" : "translate-y-full"
-          }`}
+          className={`fixed bottom-0 left-0 w-full border-t border-black bg-white/90 backdrop-blur-md transition-transform duration-300 z-50 ${selected ? "translate-y-0" : "translate-y-full"
+            }`}
         >
           <div className="p-4 space-y-3">
             <p className="text-sm">{selected?.description}</p>
@@ -71,7 +70,7 @@ export default function DraggableCanvas({
           <button
             key={item._id}
             onClick={() => setSelected(item)}
-            className="relative block w-full bg-white shadow-sm"
+            className="relative block w-full bg-white shadow-sm overflow-hidden will-change-transform"
             style={{
               transform: `rotate(${index % 2 ? 2 : -2}deg)`,
               zIndex: index,
@@ -91,9 +90,8 @@ export default function DraggableCanvas({
 
         {/* MOBILE PANEL */}
         <div
-          className={`fixed bottom-0 left-0 w-full border-t border-black bg-white/90 backdrop-blur-md transition-transform duration-300 z-50 ${
-            selected ? "translate-y-0" : "translate-y-full"
-          }`}
+          className={`fixed bottom-0 left-0 w-full border-t border-black bg-white/90 backdrop-blur-md transition-transform duration-300 z-50 ${selected ? "translate-y-0" : "translate-y-full"
+            }`}
         >
           <div className="p-4 space-y-3">
             <p className="text-sm">{selected?.description}</p>
@@ -177,9 +175,9 @@ function ArchiveItemCard({
       onDragEnd={(event, info) => {
         setPositions((prev) => ({
           ...prev,
-          [item._id]: { 
-            x: currentPos.x + info.offset.x, 
-            y: currentPos.y + info.offset.y 
+          [item._id]: {
+            x: currentPos.x + info.offset.x,
+            y: currentPos.y + info.offset.y
           },
         }));
       }}

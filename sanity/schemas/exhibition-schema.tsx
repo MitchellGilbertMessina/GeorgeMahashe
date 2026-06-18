@@ -185,7 +185,7 @@ export const exhibitionSchema = defineType({
             options: {
                 list: [
                     { title: "George Mahashe", value: "george" },
-                    { title: "Defunct Context", value: "defunct" },
+                    { title: "defunct context", value: "defunct" },
                     { title: "Both", value: "both" },
                 ],
                 layout: "radio",
