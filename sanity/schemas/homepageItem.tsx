@@ -114,12 +114,11 @@ export default defineType({
       options: {
         list: [
           { title: "George Mahashe", value: "george" },
-          { title: "defunct context", value: "defunct" },
-          { title: "Both", value: "both" },
+          { title: "Defunct Context", value: "defunct" },
         ],
         layout: "radio",
       },
-      initialValue: "george",
+      initialValue: () => process.env.NEXT_PUBLIC_SITE_ID ?? "george",
     }),
 
   ],
