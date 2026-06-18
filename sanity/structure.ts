@@ -78,8 +78,8 @@ export const structure: StructureResolver = (S) =>
                 .title("Homepage Items")
                 .child(
                   S.documentTypeList("homepageItem")
-                    .title("George — Homepage Items")
-                    .filter('_type == "homepageItem" && site in ["george", "both"]')
+                    .title("Defunct — Homepage Items")
+                    .filter('_type == "homepageItem" && site in ["defunct", "both"]')
                 ),
 
               S.listItem()
