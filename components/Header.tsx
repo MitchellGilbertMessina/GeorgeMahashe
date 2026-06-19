@@ -16,9 +16,9 @@ const siteConfig = {
     nameLines: ["—defunct context"],
     nav: [
       { label: "Projects", href: "/projects" },
-      { label: "Exhibitions", href: "/exhibitions" },
+      //{ label: "Exhibitions", href: "/exhibitions" },
       { label: "About", href: "/about" },
-      { label: "Archive", href: "/archive" },
+      //{ label: "Archive", href: "/archive" },
     ],
   },
 };
