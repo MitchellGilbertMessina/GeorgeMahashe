@@ -49,6 +49,38 @@ export default {
       hidden: ({ document }: any) => document?.site === "defunct",
     },
 
+    {
+      name: "defunctBio",
+      title: "About Text",
+      type: "array",
+      of: [
+        {
+          type: "block",
+          styles: [
+            { title: "Normal", value: "normal" },
+            { title: "H2", value: "h2" },
+            { title: "H3", value: "h3" }
+          ],
+          marks: {
+            decorators: [
+              { title: "Bold", value: "strong" },
+              { title: "Italic", value: "em" }
+            ],
+            annotations: [
+              {
+                name: "link",
+                title: "External Link",
+                type: "object",
+                fields: [{ name: "href", title: "URL", type: "url" }]
+              }
+            ]
+          }
+        }
+      ],
+      hidden: ({ document }: any) => document?.site !== "defunct",
+    },
+
+
     /*{
       name: 'contactDetails',
       title: 'Contact Details',
@@ -187,36 +219,6 @@ export default {
       hidden: ({ document }: any) => document?.site === "defunct",
     },
 
-    {
-      name: "defunctBio",
-      title: "About Text",
-      type: "array",
-      of: [
-        {
-          type: "block",
-          styles: [
-            { title: "Normal", value: "normal" },
-            { title: "H2", value: "h2" },
-            { title: "H3", value: "h3" }
-          ],
-          marks: {
-            decorators: [
-              { title: "Bold", value: "strong" },
-              { title: "Italic", value: "em" }
-            ],
-            annotations: [
-              {
-                name: "link",
-                title: "External Link",
-                type: "object",
-                fields: [{ name: "href", title: "URL", type: "url" }]
-              }
-            ]
-          }
-        }
-      ],
-      hidden: ({ document }: any) => document?.site !== "defunct",
-    },
-
+    
   ]
 }
