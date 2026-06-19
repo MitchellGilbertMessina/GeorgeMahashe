@@ -20,6 +20,7 @@ export default async function AboutPage() {
     return (
       <div className="max-w-5xl mx-auto px-6 pt-10 pb-20">
         <RichText value={about.defunctBio} />
+        <RichText value={about.exhibitions}/>
       </div>
     );
   }
