@@ -107,8 +107,8 @@ export default {
             ]
           }
         }
-      ],
-      hidden: ({ document }: any) => document?.site === "defunct",
+      ]
+      
     },
 
     {
