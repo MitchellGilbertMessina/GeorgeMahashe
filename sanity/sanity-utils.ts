@@ -214,6 +214,7 @@ export async function getAbout(siteId: string) {
     groq`
       *[_type == "about" && site == $siteId][0]{
         bio,
+        defunctBio,
         contactDetails,
         exhibitions,
         publishedTexts,
