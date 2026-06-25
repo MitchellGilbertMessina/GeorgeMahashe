@@ -1,6 +1,6 @@
 import project from '../schemas/project-schema';
 import about from '../schemas/about-schema';
-import siteSettings from "../schemas/siteSettings";
+import { siteSettings } from "../schemas/siteSettings";
 import archiveItem from "../schemas/archiveItem";
 import homepageItem from "../schemas/homepageItem";
 import { exhibitionSchema } from "../schemas/exhibition-schema";

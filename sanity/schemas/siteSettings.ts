@@ -1,11 +1,12 @@
 import { defineType, defineField } from "sanity";
 
-export default defineType({
+export const siteSettings = defineType({
   name: "siteSettings",
   title: "Site Settings",
   type: "document",
 
   fields: [
+
     defineField({
       name: "title",
       title: "Title",
@@ -14,23 +15,10 @@ export default defineType({
     }),
 
     defineField({
-      name: "homepageImages",
-      title: "Homepage Images",
+      name: "publishingIntro",
+      title: "Publishing Intro Text",
       type: "array",
-      of: [
-        {
-          type: "image",
-          options: {
-            hotspot: true
-          }
-        }
-      ]
-    })
+      of: [{ type: "block" }],
+    }),
   ],
-
-  preview: {
-    select: {
-      title: "title"
-    }
-  }
 });

@@ -169,6 +169,14 @@ export const structure: StructureResolver = (S) =>
             .title("All Exhibitions Items")
 
         ),
+
+        S.listItem()
+        .title("⚠️ All Publications Items (debug)")
+        .child(
+          S.documentTypeList("publication")
+            .title("All Publications Items")
+
+        ),
     ]);
 
 

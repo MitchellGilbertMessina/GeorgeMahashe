@@ -178,7 +178,30 @@ export const publicationSchema = defineType({
         },
       ],
     }),
+
+    // =====================================================
+    // SITE CONTEXT (for multi-site setup)
+    // =====================================================
+
+ {
+      name: "site",
+      title: "Site",
+      type: "string",
+      options: {
+        list: [
+          { title: "George Mahashe", value: "george" },
+          { title: "defunct context", value: "defunct" },
+          { title: "Both", value: "both" },
+        ],
+        layout: "radio",
+      },
+      initialValue: "defunct",
+      hidden: ({ document }: any) => !!document?.parentProject,
+    },
+
   ],
+
+  
 
   preview: {
     select: {

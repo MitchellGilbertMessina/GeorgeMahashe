@@ -4,6 +4,24 @@ import { client } from "./lib/client";
 import { groq } from "next-sanity";
 
 // =====================================================
+// SITE SETTINGS
+// =====================================================
+
+
+export async function getSiteSettings(siteId: string) {
+  return await client.fetch(
+    groq`
+      *[_type == "siteSettings" && (site == $siteId || site == "defunct" || !defined(site))][0]{
+        publishingIntro,
+        programmingIntro
+      }
+    `,
+    { siteId },
+    { next: { revalidate: 60 } }
+  );
+}
+
+// =====================================================
 // ALL MAIN PROJECTS (PROJECTS PAGE)
 // =====================================================
 
@@ -437,9 +455,12 @@ export async function getExhibition(slug: string): Promise<Exhibition | null> {
 // =====================================================
 
 export async function getPublications(siteId: string) {
-  return await client.fetch(
+  return client.fetch(
     groq`
-      *[_type == "publication" && site in [$siteId, "both"]]
+      *[
+        _type == "publication" &&
+        site in [$siteId, "both"]
+      ]
       | order(publicationDate desc)
       {
         _id,
@@ -459,13 +480,16 @@ export async function getPublications(siteId: string) {
 }
 
 // =====================================================
-// SINGLE PUBLICATION (DEFUNCT CONTEXT)
+// SINGLE PUBLICATION
 // =====================================================
 
 export async function getPublication(slug: string) {
-  return await client.fetch(
+  return client.fetch(
     groq`
-      *[_type == "publication" && slug.current == $slug][0]
+      *[
+        _type == "publication" &&
+        slug.current == $slug
+      ][0]
       {
         _id,
         title,
