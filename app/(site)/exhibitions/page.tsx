@@ -2,7 +2,10 @@ export const revalidate = 60;
 
 import Image from "next/image";
 import { getExhibitions } from "@/sanity/sanity-utils";
-import type { PortableTextBlock } from "@portabletext/types";
+import type {
+  PortableTextBlock,
+  PortableTextSpan,
+} from "@portabletext/types";
 import Link from "next/link";
 
 // =====================================================
@@ -65,16 +68,25 @@ function getDescriptionPreview(
   );
 
   if (
-    firstBlock &&
-    "children" in firstBlock &&
-    Array.isArray(firstBlock.children)
+    !firstBlock ||
+    !("children" in firstBlock) ||
+    !Array.isArray(firstBlock.children)
   ) {
-    return firstBlock.children
-      .map((child: any) => child.text)
-      .join("");
+    return "";
   }
 
-  return "";
+  return firstBlock.children
+    .map((child) => {
+      if (
+        typeof child === "object" &&
+        child !== null &&
+        "text" in child
+      ) {
+        return (child as PortableTextSpan).text ?? "";
+      }
+      return "";
+    })
+    .join("");
 }
 
 // =====================================================
