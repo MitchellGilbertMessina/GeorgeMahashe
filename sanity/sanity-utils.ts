@@ -431,3 +431,64 @@ export async function getExhibition(slug: string): Promise<Exhibition | null> {
     return null;
   }
 }
+
+// =====================================================
+// PUBLICATIONS (DEFUNCT CONTEXT)
+// =====================================================
+
+export async function getPublications(siteId: string) {
+  return await client.fetch(
+    groq`
+      *[_type == "publication" && site in [$siteId, "both"]]
+      | order(publicationDate desc)
+      {
+        _id,
+        title,
+        "slug": slug.current,
+        "featuredImage": featuredImage.asset->url,
+        featuredImageCaption,
+        description,
+        publisher,
+        publicationDate,
+        externalLinks
+      }
+    `,
+    { siteId },
+    { next: { revalidate: 60 } }
+  );
+}
+
+// =====================================================
+// SINGLE PUBLICATION (DEFUNCT CONTEXT)
+// =====================================================
+
+export async function getPublication(slug: string) {
+  return await client.fetch(
+    groq`
+      *[_type == "publication" && slug.current == $slug][0]
+      {
+        _id,
+        title,
+        "slug": slug.current,
+        "featuredImage": featuredImage.asset->url,
+        featuredImageCaption,
+        description,
+        additionalText,
+        galleryImages[]{
+          "url": asset->url,
+          caption
+        },
+        publisher,
+        editor,
+        contributors,
+        funders,
+        editions,
+        availability,
+        publicationDate,
+        externalLinks
+      }
+    `,
+    { slug },
+    { next: { revalidate: 60 } }
+  );
+}

@@ -5,6 +5,8 @@ import archiveItem from "../schemas/archiveItem";
 import homepageItem from "../schemas/homepageItem";
 import { exhibitionSchema } from "../schemas/exhibition-schema";
 
+import { publicationSchema } from "../schemas/publication-schema";
+
 import textBlock from "../schemas/objects/textBlock";
 import headingBlock from "../schemas/objects/headingBlock";
 import imageBlock from "../schemas/objects/imageBlock";
@@ -18,6 +20,8 @@ export const schemaTypes = [
   archiveItem,
   homepageItem,
   exhibitionSchema,
+
+  publicationSchema,
 
   textBlock,
   headingBlock,

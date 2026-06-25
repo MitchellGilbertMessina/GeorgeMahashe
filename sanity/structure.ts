@@ -93,12 +93,13 @@ export const structure: StructureResolver = (S) =>
                     .defaultOrdering([{ field: "orderRank", direction: "asc" }])
                 ),
 
+
               S.listItem()
-                .title("Exhibitions")
+                .title("Publications")
                 .child(
-                  S.documentTypeList("exhibition")
-                    .title("defunct — Exhibitions")
-                    .filter('_type == "exhibition" && site in ["defunct", "both"]')
+                  S.documentTypeList("publication")
+                    .title("defunct — Publications")
+                    .filter('_type == "publication" && site in ["defunct", "both"]')
                 ),
 
               S.listItem()
