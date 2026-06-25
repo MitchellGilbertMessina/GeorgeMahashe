@@ -349,6 +349,7 @@ export async function getExhibitions(siteId: string): Promise<Exhibition[]> {
 "featuredImageCaption": featuredImage.caption,
 
 description,
+additionalText,
 
 "galleryImages": galleryImages[]{
   "url": asset->url,
@@ -384,63 +385,49 @@ description,
 // SINGLE EXHIBITION
 // =====================================================
 
+// Replace the getExhibition function in sanity/sanity-utils.ts with this:
+
 export async function getExhibition(slug: string): Promise<Exhibition | null> {
-
   try {
-
     const exhibition = await client.fetch(
-
       groq`
         *[_type == "exhibition" && slug.current == $slug][0]
         {
           _id,
           _createdAt,
-
           title,
-
           "slug": slug.current,
-
           venue,
           address,
-
           startDate,
           endDate,
-
           "featuredImage": featuredImage.asset->url,
-
+          "featuredImageCaption": featuredImage.caption,
           description,
-
-          externalLink,
-
+          additionalText,
+          "galleryImages": galleryImages[]{
+            "url": asset->url,
+            caption
+          },
+          externalLinks[]{
+            label,
+            url
+          },
           relatedProjects[]->{
             _id,
             title,
-
             "slug": slug.current,
-
             "heroImage": heroImage.asset->url,
-
             shortDescription
           }
         }
       `,
       { slug },
-      {
-        next: {
-          revalidate: 60,
-        },
-      }
+      { next: { revalidate: 60 } }
     );
-
     return exhibition ?? null;
-
   } catch (error) {
-
-    console.error(
-      "Failed to fetch exhibition:",
-      error
-    );
-
+    console.error("Failed to fetch exhibition:", error);
     return null;
   }
 }

@@ -128,6 +128,21 @@ export const exhibitionSchema = defineType({
             ],
         }),
 
+        defineField({
+            name: "additionalText",
+            title: "Additional Text",
+            description:
+                "Optional second body of text appearing after the main description.",
+
+            type: "array",
+
+            of: [
+                {
+                    type: "block",
+                },
+            ],
+        }),
+
         // =====================================================
         // INSTALLATION IMAGES
         // =====================================================
@@ -149,6 +164,37 @@ export const exhibitionSchema = defineType({
                             name: "caption",
                             title: "Caption",
                             type: "string",
+                        }),
+                    ],
+                },
+            ],
+        }),
+
+        // =====================================================
+        // EXTERNAL LINKS
+        // =====================================================
+
+        defineField({
+            name: "externalLinks",
+            title: "External Links",
+            type: "array",
+
+            of: [
+                {
+                    type: "object",
+
+                    fields: [
+                        defineField({
+                            name: "label",
+                            title: "Link Label",
+                            type: "string",
+                        }),
+
+                        defineField({
+                            name: "url",
+                            title: "URL",
+                            type: "url",
+                            validation: (Rule) => Rule.required(),
                         }),
                     ],
                 },

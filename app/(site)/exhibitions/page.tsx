@@ -52,6 +52,32 @@ function formatDateRange(start: string, end: string) {
 }
 
 // =====================================================
+// DESCRIPTION PREVIEW
+// =====================================================
+
+function getDescriptionPreview(
+  description?: PortableTextBlock[]
+) {
+  if (!description?.length) return "";
+
+  const firstBlock = description.find(
+    (block) => block._type === "block"
+  );
+
+  if (
+    firstBlock &&
+    "children" in firstBlock &&
+    Array.isArray(firstBlock.children)
+  ) {
+    return firstBlock.children
+      .map((child: any) => child.text)
+      .join("");
+  }
+
+  return "";
+}
+
+// =====================================================
 // PAGE
 // =====================================================
 
@@ -158,47 +184,78 @@ function ExhibitionMeta({ exhibition }: { exhibition: Exhibition }) {
 // =====================================================
 // FEATURED
 // =====================================================
+
 function FeaturedExhibitionCard({
   exhibition,
 }: {
   exhibition: Exhibition;
 }) {
+  const descriptionPreview = getDescriptionPreview(
+    exhibition.description
+  );
+
   return (
-    <article className="space-y-4">
+    <Link
+      href={`/exhibitions/${exhibition.slug}`}
+      className="
+    block
+    group
+  "
+    >
+      <article className="space-y-4">
 
-      {/* TITLE + META */}
-      <div className="space-y-2">
-        <h3 className="font-metana text-3xl">
-          {exhibition.title}
-        </h3>
+        {/* TITLE + META */}
 
-        <ExhibitionMeta exhibition={exhibition} />
-      </div>
-
-      {/* IMAGE (still allowed, but lighter role now) */}
-      {exhibition.featuredImage && (
         <div className="space-y-2">
-          <Image
-            src={exhibition.featuredImage}
-            alt={exhibition.title}
-            width={1200}
-            height={800}
-            className="w-full h-auto"
-          />
+          <h3 className="font-metana text-3xl">
+            {exhibition.title}
+          </h3>
+
+          <ExhibitionMeta exhibition={exhibition} />
         </div>
-      )}
 
-      {/* LINK TO FULL PAGE (NEW CRITICAL PIECE) */}
-      <div>
-        <Link
-          href={`/exhibitions/${exhibition.slug}`}
-          className="text-xs uppercase tracking-widest opacity-50 hover:opacity-100 transition"
-        >
+        {/* IMAGE */}
+
+        {exhibition.featuredImage && (
+          <div className="space-y-2">
+
+            <Image
+              src={exhibition.featuredImage}
+              alt={exhibition.title}
+              width={1200}
+              height={800}
+              className="w-full h-auto"
+            />
+
+            {/* IMAGE CAPTION */}
+
+            {exhibition.featuredImageCaption && (
+              <p className="text-xs opacity-50">
+                {exhibition.featuredImageCaption}
+              </p>
+            )}
+
+          </div>
+        )}
+
+        {/* DESCRIPTION PREVIEW */}
+
+        {descriptionPreview && (
+          <div className="max-w-3xl">
+            <p className="text-sm leading-relaxed">
+              {descriptionPreview}
+            </p>
+          </div>
+        )}
+
+        {/* VIEW EXHIBITION */}
+
+        <div className="text-xs uppercase tracking-widest opacity-50">
           View Exhibition →
-        </Link>
-      </div>
+        </div>
 
-    </article>
+      </article>
+    </Link>
   );
 }
 
@@ -211,30 +268,32 @@ function PastExhibitionCard({
   exhibition: Exhibition;
 }) {
   return (
-    <article className="border-t border-gray-200 pt-6">
+    <Link
+      href={`/exhibitions/${exhibition.slug}`}
+      className="block group"
+    >
+      <article className="border-t border-gray-200 pt-6">
 
-      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4">
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4">
 
-        {/* LEFT SIDE */}
-        <div className="space-y-2">
+          {/* LEFT SIDE */}
+          <div className="space-y-2">
 
-          <h3 className="font-metana text-xl">
-            {exhibition.title}
-          </h3>
+            <h3 className="font-metana text-xl">
+              {exhibition.title}
+            </h3>
 
-          <ExhibitionMeta exhibition={exhibition} />
+            <ExhibitionMeta exhibition={exhibition} />
 
-          <Link
-            href={`/exhibitions/${exhibition.slug}`}
-            className="text-xs uppercase tracking-widest opacity-50 hover:opacity-100 transition inline-block"
-          >
-            View →
-          </Link>
+            <div className="text-xs uppercase tracking-widest opacity-50">
+              View →
+            </div>
+
+          </div>
 
         </div>
 
-      </div>
-
-    </article>
+      </article>
+    </Link>
   );
 }

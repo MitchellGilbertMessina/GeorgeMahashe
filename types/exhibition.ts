@@ -15,10 +15,16 @@ export type Exhibition = {
   featuredImageCaption?: string;
 
   description?: PortableTextBlock[];
+  additionalText?: PortableTextBlock[];
 
   galleryImages?: {
     url: string;
     caption?: string;
+  }[];
+
+  externalLinks?: {
+    label?: string;
+    url: string;
   }[];
 
   relatedProjects?: {
@@ -26,5 +32,6 @@ export type Exhibition = {
     title: string;
     slug: string;
     heroImage?: string;
+    shortDescription?: string;
   }[];
 };
