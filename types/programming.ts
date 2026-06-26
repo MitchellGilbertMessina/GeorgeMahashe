@@ -10,6 +10,17 @@ export type ProgrammingCategory =
   | "event"
   | "exhibition";
 
+export type ProgrammingImage = {
+  url: string;
+  caption?: string;
+};
+
+export type ProgrammingLink = {
+  label?: string;
+  url: string;
+  type?: string;
+};
+
 export type ProgrammingItem = {
   _id: string;
   title: string;
@@ -18,7 +29,7 @@ export type ProgrammingItem = {
   category: ProgrammingCategory;
 
   residencyType?: ResidencyType;
- subtitle?: string;
+  subtitle?: string;
 
   venue?: string;
 
@@ -29,11 +40,12 @@ export type ProgrammingItem = {
   featuredImageCaption?: string;
 
   description?: PortableTextBlock[];
-
   additionalText?: PortableTextBlock[];
 
   galleryImages?: {
     url: string;
     caption?: string;
   }[];
+
+  externalLinks?: ProgrammingLink[];
 };

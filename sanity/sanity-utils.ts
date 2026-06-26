@@ -2,6 +2,7 @@ import { Project } from "@/types/project";
 import type { Exhibition } from "@/types/exhibition";
 import { client } from "./lib/client";
 import { groq } from "next-sanity";
+import { ProgrammingItem } from "@/types/programming";
 
 // =====================================================
 // SITE SETTINGS
@@ -553,7 +554,9 @@ export async function getProgramming(siteId: string) {
 // SINGLE PROGRAMMING ITEM
 // =====================================================
 
-export async function getProgrammingItem(slug: string) {
+export async function getProgrammingItem(
+  slug: string
+): Promise<ProgrammingItem | null> {
   return await client.fetch(
     groq`
       *[_type == "programming" && slug.current == $slug][0]
@@ -572,18 +575,18 @@ export async function getProgrammingItem(slug: string) {
         description,
         additionalText,
 
-        galleryImages[]{
-          "url": asset->url,
-          caption
-        },
+        "galleryImages": galleryImages[]{
+  "url": asset->url,
+  caption
+},
 
         venue,
         location,
 
-        externalLinks[]{
-          label,
-          url,
-          type
+       "externalLinks": externalLinks[]{
+  label,
+  url,
+  type
         }
       }
     `,
