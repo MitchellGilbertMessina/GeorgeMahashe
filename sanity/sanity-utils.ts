@@ -13,7 +13,9 @@ export async function getSiteSettings(siteId: string) {
     groq`
       *[_type == "siteSettings" && (site == $siteId || site == "defunct" || !defined(site))][0]{
         publishingIntro,
-        programmingIntro
+        programmingResidenciesIntro,
+        programmingEventsIntro,
+        programmingExhibitionsIntro
       }
     `,
     { siteId },

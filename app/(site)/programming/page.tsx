@@ -1,13 +1,16 @@
 export const revalidate = 60;
 
 import ProgrammingTabs from "@/components/programming/ProgrammingTabs";
-import { getProgramming } from "@/sanity/sanity-utils";
-import type { ProgrammingItem } from "@/types/programming";
+import { getProgramming, getSiteSettings } from "@/sanity/sanity-utils";
+
 
 export default async function ProgrammingPage() {
   const siteId = process.env.NEXT_PUBLIC_SITE_ID ?? "george";
 
-  const items: ProgrammingItem[] = await getProgramming(siteId);
+  const [items, settings] = await Promise.all([
+    getProgramming(siteId),
+    getSiteSettings(siteId),
+  ]);
 
   return (
     <main className="max-w-5xl mx-auto px-6 py-16">
@@ -15,7 +18,7 @@ export default async function ProgrammingPage() {
         Programming
       </h1>
 
-      <ProgrammingTabs items={items} />
+      <ProgrammingTabs items={items} settings={settings} />
     </main>
   );
 }
