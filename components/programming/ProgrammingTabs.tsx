@@ -67,7 +67,7 @@ export default function ProgrammingTabs({
       {/* TABS */}
       {/* ===================================================== */}
 
-      <div className="flex gap-6 text-xs uppercase tracking-widest mb-8">
+      <div className="flex gap-6 text-s uppercase tracking-widest mb-8">
         {tabs.map((tab) => (
           <button
             key={tab}
@@ -88,7 +88,7 @@ export default function ProgrammingTabs({
       {/* ===================================================== */}
 
       {intro && (
-        <div className="max-w-2xl text-sm opacity-70 leading-relaxed mb-12">
+        <div className="text-sm leading-relaxed mb-12">
           <PortableText value={intro} />
         </div>
       )}

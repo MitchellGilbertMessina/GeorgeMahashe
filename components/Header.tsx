@@ -29,7 +29,7 @@ const siteConfig = {
     navGapClass: "gap-2 sm:gap-6",
 
     nav: [
-      { label: "Projects", href: "/projects" },
+      //{ label: "Projects", href: "/projects" },
       { label: "Programming", href: "/programming" },
       { label: "Publishing", href: "/publishing" },
       { label: "About", href: "/about" },
