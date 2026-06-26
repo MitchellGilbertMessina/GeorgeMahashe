@@ -2,34 +2,29 @@ import { defineType, defineField } from "sanity";
 
 export const programmingSchema = defineType({
     name: "programming",
-    title: "Programming Item",
+    title: "Programming",
     type: "document",
 
     fields: [
+
         // =====================================================
-        // TITLE
+        // SITE
         // =====================================================
         defineField({
-            name: "title",
-            title: "Title",
+            name: "site",
+            title: "Site",
             type: "string",
-            validation: (Rule) => Rule.required(),
-        }),
-
-        // =====================================================
-        // SLUG
-        // =====================================================
-        defineField({
-            name: "slug",
-            title: "Slug",
-            type: "slug",
             options: {
-                source: "title",
-                maxLength: 96,
+                list: [
+                    { title: "George Mahashe", value: "george" },
+                    { title: "Defunct Context", value: "defunct" },
+                    { title: "Both", value: "both" },
+                ],
+                layout: "radio",
             },
-            validation: (Rule) => Rule.required(),
+            initialValue: "defunct",
+            hidden: ({ document }) => Boolean((document as any)?.parentProject),
         }),
-
         // =====================================================
         // CATEGORY
         // =====================================================
@@ -44,6 +39,69 @@ export const programmingSchema = defineType({
                     { title: "Exhibition", value: "exhibition" },
                 ],
                 layout: "radio",
+            },
+            validation: (Rule) => Rule.required(),
+        }),
+
+        // =====================================================
+        // RESIDENCY TYPE (CONDITIONAL)
+        // =====================================================
+        defineField({
+            name: "residencyType",
+            title: "Residency Type",
+            type: "string",
+            options: {
+                list: [
+                    {
+                        title: "Convened Residency",
+                        value: "convened",
+                    },
+                    {
+                        title: "Visiting Residency",
+                        value: "visiting",
+                    },
+                    {
+                        title: "Pavilion Occupation",
+                        value: "pavilion",
+                    },
+                ],
+                layout: "radio",
+            },
+            hidden: ({ document }) =>
+                (document as any)?.category !== "residency",
+        }),
+
+        // =====================================================
+        // TITLE
+        // =====================================================
+        defineField({
+            name: "title",
+            title: "Title",
+            type: "string",
+            validation: (Rule) => Rule.required(),
+        }),
+
+        // =====================================================
+        // SUBTITLE (CONDITIONAL)
+        // =====================================================
+        defineField({
+            name: "subtitle",
+            title: "Subtitle",
+            type: "string",
+            hidden: ({ document }) =>
+                (document as any)?.category !== "event",
+        }),
+
+        // =====================================================
+        // SLUG
+        // =====================================================
+        defineField({
+            name: "slug",
+            title: "Slug",
+            type: "slug",
+            options: {
+                source: "title",
+                maxLength: 96,
             },
             validation: (Rule) => Rule.required(),
         }),
@@ -99,6 +157,8 @@ export const programmingSchema = defineType({
             title: "Additional Text",
             type: "array",
             of: [{ type: "block" }],
+            hidden: ({ document }) =>
+                (document as any)?.category === "event",
         }),
 
         // =====================================================
@@ -125,26 +185,10 @@ export const programmingSchema = defineType({
                     ],
                 }),
             ],
+            hidden: ({ document }) =>
+                (document as any)?.category === "event",
         }),
 
-        // =====================================================
-        // SITE
-        // =====================================================
-        defineField({
-            name: "site",
-            title: "Site",
-            type: "string",
-            options: {
-                list: [
-                    { title: "George Mahashe", value: "george" },
-                    { title: "Defunct Context", value: "defunct" },
-                    { title: "Both", value: "both" },
-                ],
-                layout: "radio",
-            },
-            initialValue: "defunct",
-            hidden: ({ document }) => Boolean((document as any)?.parentProject),
-        }),
 
         // =====================================================
         // VENUE / LOCATION
@@ -152,12 +196,6 @@ export const programmingSchema = defineType({
         defineField({
             name: "venue",
             title: "Venue",
-            type: "string",
-        }),
-
-        defineField({
-            name: "location",
-            title: "Location",
             type: "string",
         }),
 
@@ -200,6 +238,20 @@ export const programmingSchema = defineType({
                     ],
                 }),
             ],
+        }),
+
+        // =====================================================
+        // ENABLE DETAIL PAGE (READ-ONLY)
+        // =====================================================
+
+        defineField({
+            name: "showDetailPage",
+            title: "Enable Detail Page",
+            type: "boolean",
+            initialValue: ({ document }) =>
+                (document as any)?.category !== "event",
+            readOnly: true,
+            hidden: true,
         }),
     ],
 });

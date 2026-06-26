@@ -530,9 +530,11 @@ export async function getProgramming(siteId: string) {
       | order(startDate desc)
       {
         _id,
+        category,
+        residencyType,
+        subtitle,
         title,
         "slug": slug.current,
-        category,
         startDate,
         endDate,
         "featuredImage": featuredImage.asset->url,

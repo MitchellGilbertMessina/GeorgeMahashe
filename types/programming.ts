@@ -1,8 +1,26 @@
+import type { PortableTextBlock } from "@portabletext/types";
+
+export type ResidencyType =
+  | "convened"
+  | "visiting"
+  | "pavilion";
+
+export type ProgrammingCategory =
+  | "residency"
+  | "event"
+  | "exhibition";
+
 export type ProgrammingItem = {
   _id: string;
   title: string;
   slug: string;
-  category: "residency" | "event" | "exhibition";
+
+  category: ProgrammingCategory;
+
+  residencyType?: ResidencyType;
+ subtitle?: string;
+
+  venue?: string;
 
   startDate?: string;
   endDate?: string;
@@ -10,8 +28,12 @@ export type ProgrammingItem = {
   featuredImage?: string;
   featuredImageCaption?: string;
 
-  description?: any;
+  description?: PortableTextBlock[];
 
-  venue?: string;
-  location?: string;
+  additionalText?: PortableTextBlock[];
+
+  galleryImages?: {
+    url: string;
+    caption?: string;
+  }[];
 };

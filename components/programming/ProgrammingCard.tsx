@@ -1,47 +1,25 @@
-import Image from "next/image";
 import type { ProgrammingItem } from "@/types/programming";
-import RichText from "@/components/RichText";
+
+import ResidencyCard from "./cards/ResidencyCard";
+import EventCard from "./cards/EventCard";
+import ExhibitionCard from "./cards/ExhibitionCard";
 
 export default function ProgrammingCard({
   item,
 }: {
   item: ProgrammingItem;
 }) {
-  return (
-    <article className="space-y-4 border-t pt-6">
-      {/* TITLE */}
-      <h2 className="text-xl font-metana">{item.title}</h2>
+  switch (item.category) {
+    case "residency":
+      return <ResidencyCard item={item} />;
 
-      {/* META */}
-      <div className="text-sm opacity-50">
-        {item.venue && <span>{item.venue}</span>}
+    case "event":
+      return <EventCard item={item} />;
 
-        {item.startDate && (
-          <span>
-            {" "}
-            •{" "}
-            {new Date(item.startDate).toLocaleDateString("en-ZA")}
-          </span>
-        )}
-      </div>
+    case "exhibition":
+      return <ExhibitionCard item={item} />;
 
-      {/* IMAGE */}
-      {item.featuredImage && (
-        <Image
-          src={item.featuredImage}
-          alt={item.title}
-          width={1200}
-          height={800}
-          className="w-full h-auto"
-        />
-      )}
-
-      {/* DESCRIPTION */}
-      {item.description && (
-        <div className="text-sm leading-relaxed">
-          <RichText value={item.description} />
-        </div>
-      )}
-    </article>
-  );
+    default:
+      return null;
+  }
 }
