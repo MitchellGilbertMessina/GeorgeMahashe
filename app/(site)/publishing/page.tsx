@@ -2,7 +2,7 @@ export const revalidate = 60;
 
 import Link from "next/link";
 import Image from "next/image";
-import { PortableText } from "@portabletext/react";
+import RichText from "@/components/RichText";
 import { getPublications, getSiteSettings } from "@/sanity/sanity-utils";
 import type { Publication } from "@/types/publication";
 
@@ -22,15 +22,10 @@ export default async function PublishingPage() {
     <main className="max-w-4xl mx-auto px-6 py-16 space-y-16">
       {/* HEADER */}
       <section className="space-y-10">
-        <h1 className="font-metana text-xs uppercase tracking-widest opacity-50">
-          Publishing
-        </h1>
 
         {/* INTRO TEXT (SANITY CONTROLLED) */}
         {settings?.publishingIntro && (
-          <div className="max-w-2xl text-sm opacity-70 leading-relaxed">
-            <PortableText value={settings.publishingIntro} />
-          </div>
+          <RichText value={settings.publishingIntro} />
         )}
 
         {/* LIST */}
@@ -63,7 +58,7 @@ function PublicationCard({
       href={`/publishing/${publication.slug}`}
       className="block group"
     >
-      <article className="space-y-4">
+      <article className="border-t border-gray-200 pt-6 space-y-4">
         {/* TITLE */}
         <h2 className="font-metana text-2xl group-hover:opacity-60 transition">
           {publication.title}
@@ -104,7 +99,7 @@ function PublicationCard({
 
         {/* DESCRIPTION PREVIEW */}
         {publication.description?.[0]?.children?.[0]?.text && (
-          <p className="text-sm opacity-70 max-w-2xl">
+          <p className="text-sm leading-relaxed">
             {publication.description[0].children[0].text}
           </p>
         )}

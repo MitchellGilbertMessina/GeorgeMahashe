@@ -3,7 +3,7 @@ export const revalidate = 60;
 import Image from "next/image";
 import Link from "next/link";
 import { getPublication } from "@/sanity/sanity-utils";
-import { PortableText } from "@portabletext/react";
+import RichText from "@/components/RichText";
 import type { Publication } from "@/types/publication";
 
 type Props = {
@@ -87,16 +87,12 @@ export default async function PublicationPage({ params }: Props) {
 
       {/* DESCRIPTION */}
       {publication.description && (
-        <div className="prose max-w-none text-sm leading-relaxed">
-          <PortableText value={publication.description} />
-        </div>
+        <RichText value={publication.description} />
       )}
 
       {/* ADDITIONAL TEXT */}
       {publication.additionalText && (
-        <div className="prose max-w-none text-sm leading-relaxed opacity-90">
-          <PortableText value={publication.additionalText} />
-        </div>
+        <RichText value={publication.additionalText} />
       )}
 
       {/* GALLERY */}
