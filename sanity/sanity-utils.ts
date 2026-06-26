@@ -480,7 +480,7 @@ export async function getPublications(siteId: string) {
 }
 
 // =====================================================
-// SINGLE PUBLICATION
+// SINGLE PUBLICATION (DEFUNCT CONTEXT)
 // =====================================================
 
 export async function getPublication(slug: string) {
@@ -510,6 +510,77 @@ export async function getPublication(slug: string) {
         availability,
         publicationDate,
         externalLinks
+      }
+    `,
+    { slug },
+    { next: { revalidate: 60 } }
+  );
+}
+
+// =====================================================
+// PROGRAMMING LIST (FILTERED BY CATEGORY)
+// =====================================================
+
+export async function getProgramming(siteId: string) {
+  return await client.fetch(
+    groq`
+      *[_type == "programming" && site in [$siteId, "both"]]
+      | order(startDate desc)
+      {
+        _id,
+        title,
+        "slug": slug.current,
+        category,
+        startDate,
+        endDate,
+        "featuredImage": featuredImage.asset->url,
+        featuredImageCaption,
+        description,
+        venue,
+        location
+      }
+    `,
+    { siteId },
+    { next: { revalidate: 60 } }
+  );
+}
+
+// =====================================================
+// SINGLE PROGRAMMING ITEM
+// =====================================================
+
+export async function getProgrammingItem(slug: string) {
+  return await client.fetch(
+    groq`
+      *[_type == "programming" && slug.current == $slug][0]
+      {
+        _id,
+        title,
+        "slug": slug.current,
+
+        category,
+        startDate,
+        endDate,
+
+        "featuredImage": featuredImage.asset->url,
+        featuredImageCaption,
+
+        description,
+        additionalText,
+
+        galleryImages[]{
+          "url": asset->url,
+          caption
+        },
+
+        venue,
+        location,
+
+        externalLinks[]{
+          label,
+          url,
+          type
+        }
       }
     `,
     { slug },
